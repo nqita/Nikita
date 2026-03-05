@@ -1,0 +1,29 @@
+"area:api":
+  - changed-files:
+    - any-glob-to-any-file: "src/routes/**"
+
+"area:extension":
+  - changed-files:
+    - any-glob-to-any-file: "apps/extension/**"
+
+"area:widget":
+  - changed-files:
+    - any-glob-to-any-file: "apps/web/**"
+
+"area:middleware":
+  - changed-files:
+    - any-glob-to-any-file: "src/middleware/**"
+
+"infrastructure":
+  - changed-files:
+    - any-glob-to-any-file:
+      - ".github/**"
+      - "wrangler.*"
+
+"dependencies":
+  - changed-files:
+    - any-glob-to-any-file: "**/package*.json"
+
+"docs":
+  - changed-files:
+    - any-glob-to-any-file: "*.md"
