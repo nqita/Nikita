@@ -1,0 +1,64 @@
+version: "2"
+
+reviews:
+  auto_review:
+    enabled: true
+    drafts: false
+  request_changes_workflow: true
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+
+  path_instructions:
+    - path: "src/routes/**"
+      instructions: |
+        Hono route handler file. Verify:
+        - Every route uses requireAuth() middleware (or has an explicit justification for why it doesn't).
+        - Every POST/PATCH/DELETE route uses zValidator with a zod schema for request body validation.
+        - Responses always follow the { data: T, error: null } / { data: null, error: {...} } envelope.
+        - rateLimit() middleware is applied to every route.
+        - The route is mounted at BOTH /v1/<path> and /api/v1/<path> in src/index.ts.
+        - User message content is NEVER logged — only metadata (userId, sessionId, product).
+        - Memory keys always include userId as a prefix (never sessionId-only access).
+
+    - path: "src/middleware/**"
+      instructions: |
+        Middleware file. Verify:
+        - Auth middleware (requireAuth / optionalAuth) correctly handles both JWT and eral_ API keys.
+        - Rate limit middleware uses the KV_RATE_LIMITS binding, gracefully degrades if binding is absent.
+        - Security headers are set correctly (HSTS only in production).
+        - CORS config allows WokSpec origins and browser extensions (chrome-extension://, moz-extension://).
+        - Never log or expose JWT_SECRET in any code path.
+
+    - path: "apps/extension/**"
+      instructions: |
+        Plasmo browser extension code. Rules:
+        - Content scripts must use Shadow DOM for all UI injection. Never add styles to document.head or document.body directly.
+        - Content scripts must not access host page JavaScript context without explicit justification.
+        - Never put auth tokens or API keys in PLASMO_PUBLIC_* variables (they are visible to users).
+        - Auth tokens must only be managed by the background service worker.
+        - All message passing between content scripts and background must use Plasmo messaging patterns.
+        - Cleanup all event listeners on unmount/disconnect.
+        - The extension must build cleanly for at least Chrome MV3 and Firefox MV2/MV3.
+
+    - path: "apps/web/**"
+      instructions: |
+        Next.js web app. Rules:
+        - The app is a static export — no server-side API routes (those live in the Worker).
+        - The embeddable widget must work correctly in Shadow DOM — no global CSS leakage.
+        - Auth tokens (JWTs, API keys) must be stored in httpOnly cookies or memory, NOT localStorage.
+        - All API calls go through the Eral API, never direct to OpenAI or other providers.
+        - Component CSS must be scoped (CSS Modules or Tailwind classes) — no global selectors.
+
+chat:
+  auto_reply: true
+
+language: en-US
+
+tone_instructions: |
+  Be direct and technical. Focus on correctness, security, and privacy.
+  Flag any code that could log user message content as a BLOCKER.
+  Flag any unauthenticated route that touches user data as a BLOCKER.
+  Flag any response that breaks the { data, error } envelope as a BLOCKER.
+  Flag any content script code that adds global CSS or event listeners without cleanup.
