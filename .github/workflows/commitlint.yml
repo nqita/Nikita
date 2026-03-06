@@ -21,7 +21,7 @@ jobs:
 
       - name: Validate Dependabot PR title
         if: startsWith(github.event.pull_request.head.ref, 'dependabot/')
-        run: echo "${{ github.event.pull_request.title }}" | npx commitlint --verbose
+        run: echo "${{ github.event.pull_request.title }}" | npx commitlint --extends @commitlint/config-conventional --verbose
         env:
           HUSKY: 0
 
@@ -29,6 +29,7 @@ jobs:
         if: ${{ !startsWith(github.event.pull_request.head.ref, 'dependabot/') }}
         run: |
           npx commitlint \
+            --extends @commitlint/config-conventional \
             --from ${{ github.event.pull_request.base.sha }} \
             --to ${{ github.event.pull_request.head.sha }} \
             --verbose
