@@ -1,4 +1,3 @@
-import type { KVNamespace } from '@cloudflare/workers-types';
 import type { Message } from '../types';
 
 const MAX_MESSAGES = 40;       // Max messages stored per session

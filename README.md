@@ -27,20 +27,43 @@ All endpoints require `Authorization: Bearer <jwt>` (WokSpec JWT, shared secret)
 |--------|------|-------------|
 | `GET`  | `/health` | Health check |
 | `GET`  | `/v1/status` | Provider info and model variants |
-| `POST` | `/v1/chat` | Chat with persistent session memory |
+| `POST` | `/v1/chat` | Chat with persistent session memory and optional integration context |
 | `GET`  | `/v1/chat/sessions` | List sessions |
 | `GET`  | `/v1/chat/:sessionId` | Session history |
 | `DELETE` | `/v1/chat/:sessionId` | Clear session |
-| `POST` | `/v1/generate` | Content generation (posts, code, docs, prompts) |
-| `POST` | `/v1/analyze` | Content analysis (summarize, review, extract) |
+| `POST` | `/v1/generate` | Content generation plus text transforms (`improve`, `rewrite`, `expand`, `shorten`) |
+| `POST` | `/v1/analyze` | Content analysis (summarize, review, extract) with optional integration hints |
+
+### Integration context
+
+Every main Eral endpoint now accepts optional integration metadata so external apps can tell Eral
+where it is running and what the user is doing.
+
+```json
+{
+  "product": "support-portal",
+  "integration": {
+    "name": "Acme Support Dashboard",
+    "kind": "webapp",
+    "url": "https://support.example.com/tickets/42",
+    "pageTitle": "Ticket #42",
+    "capabilities": ["chat", "generate", "page-context"],
+    "instructions": "Prefer concise support-agent answers."
+  }
+}
+```
 
 ### AI providers
 
 | Provider | Used for |
 |----------|----------|
-| OpenAI GPT-4o | Default chat and generation |
-| Cloudflare Workers AI (Llama 3.1 8B) | Fallback, edge-native, free tier |
+| Cloudflare Workers AI (default) | Free-first default path for Eral |
+| OpenAI GPT-4o | Optional paid override |
 | Groq (Llama 3.3 70B) | High-speed inference for WokGen/Vecto |
+
+By default Eral now prefers Cloudflare Workers AI so it can stay free during early rollout. The
+default model is `@cf/meta/llama-3.3-70b-instruct-fp8-fast`, with
+`@cf/meta/llama-3.1-8b-instruct-fp8-fast` as the automatic fallback.
 
 ---
 
@@ -66,12 +89,18 @@ npm run build   # production build
 
 Drop the Eral widget into any WokSpec product (or external site):
 
-```tsx
-import EralWidget from '@wokspec/eral-widget';
-
-// In your layout
-<EralWidget apiUrl="https://api.wokspec.org/v1/chat" />
+```html
+<script
+  src="https://eral.wokspec.org/widget.js"
+  data-eral-key="eral_..."
+  data-eral-name="Eral"
+  data-eral-product="support-portal"
+  data-eral-page-context="true"
+></script>
 ```
+
+The widget now runs inside a Shadow DOM, exposes `window.EralWidget`, and keeps `window.Eral` as
+a compatibility alias.
 
 ---
 

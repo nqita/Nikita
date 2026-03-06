@@ -17,6 +17,10 @@ export interface Env {
   JWT_SECRET: string;
   OPENAI_API_KEY: string | undefined;
   SENTRY_DSN: string | undefined;
+  AI_PROVIDER: 'cloudflare' | 'openai' | undefined;
+  OPENAI_MODEL: string | undefined;
+  CF_AI_MODEL: string | undefined;
+  CF_AI_FALLBACK_MODEL: string | undefined;
 
   ENVIRONMENT: string;
 }
@@ -49,6 +53,32 @@ export interface ApiKeyRecord {
 }
 
 export type ApiKeyScope = 'chat' | 'generate' | 'analyze' | 'wokgen' | '*';
+
+export type KnownProduct =
+  | 'woksite'
+  | 'wokgen'
+  | 'wokpost'
+  | 'chopsticks'
+  | 'extension'
+  | 'dilu'
+  | 'vecto'
+  | 'woktool';
+
+export type IntegrationMetadataValue = string | number | boolean;
+
+export interface IntegrationContext {
+  id?: string;
+  name?: string;
+  kind?: string;
+  url?: string;
+  origin?: string;
+  pageTitle?: string;
+  locale?: string;
+  userRole?: string;
+  instructions?: string;
+  capabilities?: string[];
+  metadata?: Record<string, IntegrationMetadataValue>;
+}
 
 // ── API Responses ─────────────────────────────────────────────────────────────
 
@@ -84,7 +114,11 @@ export type GenerateType =
   | 'prompt'
   | 'docs'
   | 'email'
-  | 'summary';
+  | 'summary'
+  | 'rewrite'
+  | 'expand'
+  | 'shorten'
+  | 'improve';
 
 export type AnalyzeType =
   | 'summarize'

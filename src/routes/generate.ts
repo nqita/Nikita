@@ -4,9 +4,10 @@ import { z } from 'zod';
 import type { Env, EralUser, GenerateType } from '../types';
 import { requireAuth, rateLimit } from '../middleware';
 import { run, eralSystemPrompt } from '../lib/openai';
+import { buildContext, IntegrationSchema, ProductSchema, productPromptExtras } from '../lib/context';
 
 const generate = new Hono<{ Bindings: Env; Variables: { user: EralUser } }>();
-generate.use('*', requireAuth());
+generate.use('*', requireAuth('generate'));
 
 const GENERATE_INSTRUCTIONS: Record<GenerateType, string> = {
   post:    'Write a compelling social media post for a developer/builder audience. Be authentic, concise, and engaging. Include relevant hashtags at the end.',
@@ -16,23 +17,43 @@ const GENERATE_INSTRUCTIONS: Record<GenerateType, string> = {
   docs:    'Write clear, developer-friendly documentation. Use markdown formatting with headers, code blocks, and examples where appropriate.',
   email:   'Write a professional but friendly email. Keep it concise and action-oriented.',
   summary: 'Write a concise summary that captures the key points. Use bullet points for clarity.',
+  rewrite: 'Rewrite the material so it is clearer, cleaner, and more natural while preserving the original meaning.',
+  expand:  'Expand the material into a more complete draft. If the input is a brief or instruction, turn it into polished finished content instead of describing what you would write.',
+  shorten: 'Shorten the material aggressively while keeping the core meaning, key facts, and intended tone.',
+  improve: 'Improve the material for clarity, structure, tone, and polish while keeping the author intent intact.',
 };
+
+const GenerateSchema = z.object({
+  type: z.enum(['post', 'caption', 'code', 'prompt', 'docs', 'email', 'summary', 'rewrite', 'expand', 'shorten', 'improve']),
+  topic: z.string().trim().min(1).max(2000).optional().describe('What to generate content about'),
+  content: z.string().trim().min(1).max(12000).optional().describe('Existing content or a brief to transform'),
+  prompt: z.string().trim().min(1).max(4000).optional().describe('Short instruction or brief'),
+  context: z.string().max(8000).optional().describe('Additional context or existing content'),
+  tone: z.enum(['professional', 'casual', 'technical', 'playful']).default('casual'),
+  length: z.enum(['short', 'medium', 'long']).default('medium'),
+  product: ProductSchema,
+  integration: IntegrationSchema,
+}).superRefine((value, ctx) => {
+  const hasInput = [value.topic, value.content, value.prompt].some((entry) => Boolean(entry?.trim()));
+  if (!hasInput) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'Provide at least one of topic, content, or prompt.',
+      path: ['topic'],
+    });
+  }
+});
 
 // POST /v1/generate
 generate.post(
   '/',
   rateLimit('generate'),
-  zValidator('json', z.object({
-    type:    z.enum(['post', 'caption', 'code', 'prompt', 'docs', 'email', 'summary']),
-    topic:   z.string().min(1).max(2000).describe('What to generate content about'),
-    context: z.string().max(8000).optional().describe('Additional context or existing content'),
-    tone:    z.enum(['professional', 'casual', 'technical', 'playful']).default('casual'),
-    length:  z.enum(['short', 'medium', 'long']).default('medium'),
-    product: z.enum(['woksite', 'wokgen', 'wokpost', 'chopsticks']).optional(),
-  })),
+  zValidator('json', GenerateSchema),
   async (c) => {
     const user = c.get('user');
-    const { type, topic, context, tone, length, product } = c.req.valid('json');
+    const { type, topic, content, prompt, context, tone, length, product, integration } = c.req.valid('json');
+    const sourceMaterial = [topic, prompt, content].find((value) => Boolean(value?.trim())) ?? '';
+    const transformMode = ['rewrite', 'expand', 'shorten', 'improve'].includes(type);
 
     const lengthGuidance: Record<string, string> = {
       short:  'Keep it brief — under 100 words.',
@@ -47,18 +68,31 @@ generate.post(
       playful:      'Use a fun, energetic tone with personality.',
     };
 
+    const promptExtras = productPromptExtras(product, integration);
+    const userContext = buildContext({ user, product, integration });
     const systemPrompt = eralSystemPrompt(
-      `You are generating ${type} content for ${user.displayName}, a WokSpec user.`
+      [
+        `You are handling a ${transformMode ? 'text transformation' : 'content generation'} task for ${user.displayName}.`,
+        promptExtras,
+        `User context:\n${userContext}`,
+      ].filter(Boolean).join('\n\n')
     );
 
-    const userMessage = [
-      `Generate a ${type} about: ${topic}`,
-      context ? `\nContext/Reference:\n${context}` : '',
-      toneGuidance[tone],
-      lengthGuidance[length],
-      GENERATE_INSTRUCTIONS[type as GenerateType],
-      product ? `This is for use in WokSpec's ${product} product.` : '',
-    ].filter(Boolean).join('\n');
+    const userMessage = transformMode
+      ? [
+          GENERATE_INSTRUCTIONS[type as GenerateType],
+          toneGuidance[tone],
+          lengthGuidance[length],
+          context ? `Additional guidance:\n${context}` : '',
+          `Source material / brief:\n${sourceMaterial}`,
+        ].filter(Boolean).join('\n\n')
+      : [
+          `Generate a ${type} about: ${sourceMaterial}`,
+          context ? `Context/Reference:\n${context}` : '',
+          toneGuidance[tone],
+          lengthGuidance[length],
+          GENERATE_INSTRUCTIONS[type as GenerateType],
+        ].filter(Boolean).join('\n\n');
 
     try {
       const result = await run(
@@ -70,7 +104,14 @@ generate.post(
           maxTokens: length === 'long' ? 2048 : length === 'medium' ? 1024 : 512,
           temperature: tone === 'playful' ? 0.9 : 0.7,
         },
-        { openaiApiKey: c.env.OPENAI_API_KEY, cfAI: c.env.AI }
+        {
+          openaiApiKey: c.env.OPENAI_API_KEY,
+          cfAI: c.env.AI,
+          preferredProvider: c.env.AI_PROVIDER,
+          openaiModel: c.env.OPENAI_MODEL,
+          cfModel: c.env.CF_AI_MODEL,
+          cfFallbackModel: c.env.CF_AI_FALLBACK_MODEL,
+        }
       );
 
       return c.json({

@@ -1,4 +1,3 @@
-import type { KVNamespace } from '@cloudflare/workers-types';
 import type { ApiKeyRecord, ApiKeyScope } from '../types';
 
 const KEY_PREFIX = 'eral_';

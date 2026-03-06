@@ -6,7 +6,7 @@ import { requireAuth, rateLimit } from '../middleware';
 import { run, eralSystemPrompt } from '../lib/openai';
 
 const wokgen = new Hono<{ Bindings: Env; Variables: { user: EralUser } }>();
-wokgen.use('*', requireAuth());
+wokgen.use('*', requireAuth('wokgen'));
 
 // POST /v1/wokgen/prompt
 // Generates optimized asset/image prompts for use in WokGen.
@@ -65,7 +65,14 @@ wokgen.post(
           maxTokens: count * 400,
           temperature: 0.8,
         },
-        { openaiApiKey: c.env.OPENAI_API_KEY, cfAI: c.env.AI }
+        {
+          openaiApiKey: c.env.OPENAI_API_KEY,
+          cfAI: c.env.AI,
+          preferredProvider: c.env.AI_PROVIDER,
+          openaiModel: c.env.OPENAI_MODEL,
+          cfModel: c.env.CF_AI_MODEL,
+          cfFallbackModel: c.env.CF_AI_FALLBACK_MODEL,
+        }
       );
 
       return c.json({

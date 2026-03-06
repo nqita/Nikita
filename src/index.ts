@@ -9,7 +9,7 @@ import { wokgenRouter } from './routes/wokgen';
 import { statusRouter } from './routes/status';
 import { keysRouter } from './routes/keys';
 // @ts-ignore — imported as text blob via wrangler [[rules]]
-import WIDGET_BUNDLE from '../../dist/eral-widget.js';
+import WIDGET_BUNDLE from '../dist/eral-widget.txt';
 
 const app = new Hono<{ Bindings: Env }>();
 

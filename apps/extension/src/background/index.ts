@@ -1,6 +1,6 @@
 import { reportError } from "@/lib/errors"
 import { fetchWithAuth, API_URL } from "@/lib/api"
-import { ERAL_API } from "@/lib/eral"
+import { eralAnalyze } from "@/lib/eral"
 
 const SITE_URL = process.env.PLASMO_PUBLIC_SITE_URL ?? "https://wokspec.org"
 
@@ -274,16 +274,16 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
           }
           const { accessToken } = await chrome.storage.session.get(["accessToken"])
           if (!accessToken) { sendResponse({ success: false, error: "not_authenticated" }); return }
-          const analyzeType = isVideo ? "summarize" : "summarize"
-          const systemHint = isVideo ? "You are summarizing a video. Focus on the key topics, claims, and takeaways." : undefined
-          const res = await fetch(`${ERAL_API}/v1/analyze`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}`, "X-Eral-Source": "eral-extension" },
-            body: JSON.stringify({ type: analyzeType, content, ...(systemHint ? { systemHint } : {}) }),
+          const summary = await eralAnalyze("summarize", content, {
+            pageTitle: (message as { title?: string }).title,
+            context: isVideo ? "This content comes from a video page." : undefined,
+            systemHint: isVideo
+              ? "You are summarizing a video. Focus on the key topics, claims, and takeaways."
+              : undefined,
+            capabilities: ["video-summary"],
           })
-          if (!res.ok) { sendResponse({ success: false }); return }
-          const data = await res.json()
-          sendResponse({ success: true, summary: data.result ?? data.data?.result ?? "" })
+          if (!summary) { sendResponse({ success: false }); return }
+          sendResponse({ success: true, summary: summary.result })
         } catch {
           sendResponse({ success: false })
         }

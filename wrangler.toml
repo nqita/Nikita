@@ -1,13 +1,14 @@
 name = "eral"
 main = "src/index.ts"
-
-[[rules]]
-type = "Text"
-globs = ["dist/*.js"]
 compatibility_date = "2026-02-20"
 compatibility_flags = ["nodejs_compat"]
 workers_dev = true
 preview_urls = false
+
+[[rules]]
+type = "Text"
+globs = ["dist/*.txt"]
+fallthrough = true
 
 [[routes]]
 pattern = "eral.wokspec.org/api/*"
@@ -18,6 +19,9 @@ enabled = true
 
 [vars]
 ENVIRONMENT = "production"
+AI_PROVIDER = "cloudflare"
+CF_AI_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
+CF_AI_FALLBACK_MODEL = "@cf/meta/llama-3.1-8b-instruct-fp8-fast"
 
 # KV Namespaces
 # KV_SESSIONS: shared with WokAPI for cross-service auth verification
@@ -39,13 +43,13 @@ id = "381283eb1b1e4f02b4c9b26dcbaa07ab"
 binding = "KV_API_KEYS"
 id = "e4197f2c6dcd42b5ac1065d01ee9f0e8"
 
-# Cloudflare Workers AI (fallback when OPENAI_API_KEY is not set)
+# Cloudflare Workers AI (free-first default provider)
 [ai]
 binding = "AI"
 
 # Secrets (set via: wrangler secret put <NAME>)
 # JWT_SECRET        — shared with WokAPI, required
-# OPENAI_API_KEY    — GPT-4o primary provider, optional (falls back to CF AI)
+# OPENAI_API_KEY    — optional paid provider override
 # SENTRY_DSN        — optional, error tracking
 
 [dev]

@@ -108,7 +108,14 @@ function ComposeButton() {
       const content = mode === 'improve' && existing
         ? existing
         : prompt || 'Write something helpful.';
-      const res = await eralGenerate(type, content);
+      const res = await eralGenerate(type, content, {
+        pageUrl: location.href,
+        pageTitle: document.title,
+        context: mode === 'generate' && existing
+          ? `Adapt the result so it fits naturally with this existing field context:\n${existing}`
+          : undefined,
+        capabilities: ['compose-assist'],
+      });
       setResult(res?.content ?? '');
     } catch {
       setResult('Failed to reach Eral. Check your connection.');

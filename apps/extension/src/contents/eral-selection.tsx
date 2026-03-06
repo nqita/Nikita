@@ -1,6 +1,6 @@
 import type { PlasmoCSConfig } from "plasmo"
 import { useState, useEffect, useRef, useCallback } from "react"
-import { eralAnalyze, getAccessToken, type AnalyzeType } from "@/lib/eral"
+import { eralAnalyze, eralGenerate, getAccessToken, type AnalyzeType } from "@/lib/eral"
 
 export const config: PlasmoCSConfig = {
   matches: ["<all_urls>"],
@@ -98,7 +98,7 @@ function EralSelectionToolbar() {
     }
   }, [enabled, dismiss])
 
-  const handleAction = async (type: AnalyzeType | "ask") => {
+  const handleAction = async (type: AnalyzeType | "improve" | "ask") => {
     if (type === "ask") {
       // Trigger the AI overlay with this text as prompt
       chrome.runtime.sendMessage({ type: "ERAL_ASK", text: toolbar.text })
@@ -113,16 +113,23 @@ function EralSelectionToolbar() {
     }
 
     setResult({ visible: true, loading: true, content: "", type })
-    const res = await eralAnalyze(type, toolbar.text)
+    const sharedOptions = {
+      pageUrl: location.href,
+      pageTitle: document.title,
+      capabilities: ["selection-actions"],
+    }
+    const content = type === "improve"
+      ? (await eralGenerate("improve", toolbar.text, sharedOptions))?.content
+      : (await eralAnalyze(type, toolbar.text, sharedOptions))?.result
     setResult({
       visible: true,
       loading: false,
-      content: res?.result ?? "Something went wrong. Please try again.",
+      content: content ?? "Something went wrong. Please try again.",
       type,
     })
   }
 
-  const actions: { label: string; type: AnalyzeType | "ask"; title: string }[] = [
+  const actions: { label: string; type: AnalyzeType | "improve" | "ask"; title: string }[] = [
     { label: "Explain", type: "explain", title: "Explain this text" },
     { label: "Summarize", type: "summarize", title: "Summarize this text" },
     { label: "Improve", type: "improve", title: "Improve this text" },

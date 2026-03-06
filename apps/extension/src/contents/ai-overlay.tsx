@@ -1,6 +1,6 @@
 import type { PlasmoCSConfig } from "plasmo"
 import { useState, useEffect, useRef } from "react"
-import { eralChat, ERAL_API } from "@/lib/eral"
+import { eralChat } from "@/lib/eral"
 
 export const config: PlasmoCSConfig = {
   matches: ["<all_urls>"],
@@ -61,7 +61,12 @@ function AIOverlay() {
     const updatedMessages: Message[] = [...messages, { role: "user", content: text }]
     setMessages(updatedMessages)
     const pageContext = `Page: ${document.title}\nURL: ${location.href}\n\n${document.body.innerText?.slice(0, 4000) || ""}`
-    const result = await eralChat(text, sessionId.current, pageContext)
+    const result = await eralChat(text, sessionId.current, {
+      pageContext,
+      pageUrl: location.href,
+      pageTitle: document.title,
+      capabilities: ["overlay-chat"],
+    })
     if (result) {
       setMessages([...updatedMessages, { role: "assistant", content: result.message }])
     } else {
@@ -199,5 +204,4 @@ function AIOverlay() {
 }
 
 export default AIOverlay
-
 

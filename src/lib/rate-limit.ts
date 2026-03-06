@@ -1,5 +1,3 @@
-import type { KVNamespace } from '@cloudflare/workers-types';
-
 interface RateLimitConfig {
   limit: number;
   windowSeconds: number;

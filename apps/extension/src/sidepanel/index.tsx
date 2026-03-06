@@ -1,8 +1,8 @@
 import { useEffect, useState, useCallback, useRef } from "react"
 import "./style.css"
+import { eralChat } from "@/lib/eral"
 
 const API_URL = process.env.PLASMO_PUBLIC_API_URL ?? "https://api.wokspec.org"
-const ERAL_API = process.env.PLASMO_PUBLIC_ERAL_API_URL ?? "https://eral.wokspec.org/api"
 
 interface User {
   displayName: string
@@ -108,18 +108,13 @@ function SidePanel() {
     setChatMessages((prev) => [...prev, { role: "user", content: text }])
     setEralLoading(true)
     try {
-      const res = await fetch(`${ERAL_API}/v1/chat`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-          "X-Eral-Source": "eral-extension",
-        },
-        body: JSON.stringify({ message: text, sessionId: sessionId.current, pageContext }),
+      const result = await eralChat(text, sessionId.current, {
+        pageContext: pageContext ?? undefined,
+        pageTitle: pageTitle || undefined,
+        capabilities: ["sidepanel-chat"],
       })
-      if (res.ok) {
-        const data = await res.json()
-        setChatMessages((prev) => [...prev, { role: "eral", content: data.message ?? data.reply ?? "…" }])
+      if (result) {
+        setChatMessages((prev) => [...prev, { role: "eral", content: result.message || "…" }])
       } else {
         setChatMessages((prev) => [...prev, { role: "eral", content: "Something went wrong. Please try again." }])
       }

@@ -5,17 +5,15 @@ import type { Env, EralUser } from '../types';
 import { requireAuth, rateLimit } from '../middleware';
 import { run, eralSystemPrompt } from '../lib/openai';
 import { getMemory, appendMemory, clearMemory, listSessions } from '../lib/memory';
-import { buildContext, productPromptExtras } from '../lib/context';
+import { buildContext, IntegrationSchema, ProductSchema, productPromptExtras } from '../lib/context';
 
 const chat = new Hono<{ Bindings: Env; Variables: { user: EralUser } }>();
-chat.use('*', requireAuth());
+chat.use('*', requireAuth('chat'));
 
 const MessageSchema = z.object({
   role: z.enum(['user', 'assistant']),
   content: z.string().min(1).max(4000),
 });
-
-const ProductSchema = z.enum(['woksite', 'wokgen', 'wokpost', 'chopsticks', 'extension']).optional();
 
 // POST /v1/chat
 // Main conversational endpoint with persistent memory per session.
@@ -26,19 +24,20 @@ chat.post(
     message:    z.string().min(1).max(4000),
     sessionId:  z.string().max(128).default('default'),
     product:    ProductSchema,
+    integration: IntegrationSchema,
     pageContext: z.string().max(12000).optional(),
     history:    z.array(MessageSchema).max(10).optional(), // override — ignores stored memory
   })),
   async (c) => {
     const user = c.get('user');
-    const { message, sessionId, product, pageContext, history } = c.req.valid('json');
+    const { message, sessionId, product, integration, pageContext, history } = c.req.valid('json');
 
     // Build context extras
-    const userContext = buildContext({ user, product, pageContext });
-    const productExtras = productPromptExtras(product);
+    const userContext = buildContext({ user, product, integration, pageContext });
+    const promptExtras = productPromptExtras(product, integration);
 
     const systemPrompt = eralSystemPrompt(
-      [productExtras, `\nUser context:\n${userContext}`].filter(Boolean).join('\n')
+      [promptExtras, `User context:\n${userContext}`].filter(Boolean).join('\n\n')
     );
 
     // Use provided history override, or retrieve stored memory
@@ -55,7 +54,14 @@ chat.post(
     try {
       const result = await run(
         { messages, maxTokens: 1024 },
-        { openaiApiKey: c.env.OPENAI_API_KEY, cfAI: c.env.AI }
+        {
+          openaiApiKey: c.env.OPENAI_API_KEY,
+          cfAI: c.env.AI,
+          preferredProvider: c.env.AI_PROVIDER,
+          openaiModel: c.env.OPENAI_MODEL,
+          cfModel: c.env.CF_AI_MODEL,
+          cfFallbackModel: c.env.CF_AI_FALLBACK_MODEL,
+        }
       );
 
       // Persist this exchange to memory (fire-and-forget)
