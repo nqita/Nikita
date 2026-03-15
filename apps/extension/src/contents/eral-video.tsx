@@ -1,8 +1,8 @@
 /**
- * eral-video.tsx
- * Detects YouTube/video pages and injects a "Summarize with Eral" button
+ * nikita-video.tsx
+ * Detects YouTube/video pages and injects a "Summarize with Nikita" button
  * near the video title. Sends a SUMMARIZE_PAGE message to the background
- * worker which calls Eral /v1/analyze, then shows the summary in a panel.
+ * worker which calls Nikita /v1/analyze, then shows the summary in a panel.
  */
 import type { PlasmoCSConfig } from 'plasmo';
 import { useEffect, useRef, useState } from 'react';
@@ -94,7 +94,7 @@ function VideoSummarizeButton() {
       });
       setSummary(response.summary ?? response.error ?? 'Could not summarize.');
     } catch {
-      setSummary('Failed to reach Eral. Check your connection.');
+      setSummary('Failed to reach Nikita. Check your connection.');
     } finally {
       setLoading(false);
     }
@@ -137,7 +137,7 @@ function VideoSummarizeButton() {
             <path d="M12 3l1.5 3.5L17 8l-3.5 1.5L12 13l-1.5-3.5L7 8l3.5-1.5L12 3z"/>
             <path d="M19 15l.8 1.8 1.8.8-1.8.8-.8 1.8-.8-1.8-1.8-.8 1.8-.8L19 15z"/>
           </svg>
-          {loading ? 'Summarizing…' : 'Summarize with Eral'}
+          {loading ? 'Summarizing…' : 'Summarize with Nikita'}
         </button>
       )}
 

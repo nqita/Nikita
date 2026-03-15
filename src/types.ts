@@ -1,5 +1,5 @@
 // ============================================================
-// Eral — WokSpec AI
+// Nikita — WokSpec AI
 // Cloudflare Worker bindings & shared type definitions
 // ============================================================
 
@@ -25,13 +25,13 @@ export interface Env {
   OPENAI_CHAT_MODEL: string | undefined;
   OPENAI_GENERATE_MODEL: string | undefined;
   OPENAI_ANALYZE_MODEL: string | undefined;
-  OPENAI_WOKGEN_MODEL: string | undefined;
+  OPENAI_STUDIO_MODEL: string | undefined;
   GROQ_MODEL: string | undefined;
   CF_AI_MODEL: string | undefined;
   CF_AI_CHAT_MODEL: string | undefined;
   CF_AI_GENERATE_MODEL: string | undefined;
   CF_AI_ANALYZE_MODEL: string | undefined;
-  CF_AI_WOKGEN_MODEL: string | undefined;
+  CF_AI_STUDIO_MODEL: string | undefined;
   CF_AI_FALLBACK_MODEL: string | undefined;
 
   ENVIRONMENT: string;
@@ -72,17 +72,16 @@ export interface ApiKeyRecord {
   lastUsedAt: string | null;
 }
 
-export type ApiKeyScope = 'chat' | 'generate' | 'analyze' | 'wokgen' | '*';
+export type ApiKeyScope = 'chat' | 'generate' | 'analyze' | 'studio' | '*';
 
 export type KnownProduct =
   | 'woksite'
-  | 'wokgen'
-  | 'wokpost'
-  | 'chopsticks'
+  | 'studio'
+  | 'wokhei'
+  | 'api'
+  | 'autiladus'
   | 'extension'
-  | 'dilu'
-  | 'vecto'
-  | 'woktool';
+  ;
 
 export type IntegrationMetadataValue = string | number | boolean;
 
@@ -147,7 +146,7 @@ export type AnalyzeType =
   | 'extract'
   | 'sentiment';
 
-export type AIRoute = 'chat' | 'generate' | 'analyze' | 'wokgen';
+export type AIRoute = 'chat' | 'generate' | 'analyze' | 'studio';
 
 export type AIQuality = 'fast' | 'balanced' | 'best';
 

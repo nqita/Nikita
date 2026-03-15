@@ -50,7 +50,7 @@ function OptionsPage() {
         <div className="mb-8 flex items-center gap-3">
           <div className="h-10 w-10 rounded-xl bg-[#3b82f6] flex items-center justify-center text-xl">✦</div>
           <div>
-            <h1 className="text-xl font-bold">Eral Settings</h1>
+            <h1 className="text-xl font-bold">Nikita Settings</h1>
             <p className="text-xs text-[#71717a]">v{VERSION}</p>
           </div>
           {saved && (
@@ -69,7 +69,7 @@ function OptionsPage() {
             <label className="flex items-center justify-between px-4 py-3 cursor-pointer">
               <div>
                 <p className="text-sm">Show AI button on pages</p>
-                <p className="text-xs text-[#71717a] mt-0.5">Floating ✦ button to open Eral AI assistant</p>
+                <p className="text-xs text-[#71717a] mt-0.5">Floating ✦ button to open Nikita AI assistant</p>
               </div>
               <Toggle checked={settings.showAIButton} onChange={(v) => updateSetting("showAIButton", v)} />
             </label>
@@ -183,10 +183,10 @@ function OptionsPage() {
               <div className="flex flex-wrap gap-2 pt-1">
                 {[
                   { label: "Dashboard", href: "https://wokspec.org/dashboard" },
-                  { label: "GitHub", href: "https://github.com/wokspec/eral" },
+                  { label: "GitHub", href: "https://github.com/wokspec/nikita" },
                   { label: "Changelog", href: "https://wokspec.org/changelog" },
                   { label: "Privacy", href: "https://wokspec.org/privacy" },
-                  { label: "Report a bug", href: "https://github.com/wokspec/eral/issues/new" },
+                  { label: "Report a bug", href: "https://github.com/wokspec/nikita/issues/new" },
                 ].map(({ label, href }) => (
                   <a
                     key={label}

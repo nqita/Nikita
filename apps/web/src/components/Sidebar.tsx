@@ -17,21 +17,21 @@ export function Sidebar({ apiKey, onSignOut }: Props) {
       setSessions(sess);
       setActiveSessionId(activeId);
     };
-    window.addEventListener('eral:sessions', handleUpdate);
-    return () => window.removeEventListener('eral:sessions', handleUpdate);
+    window.addEventListener('nikita:sessions', handleUpdate);
+    return () => window.removeEventListener('nikita:sessions', handleUpdate);
   }, []);
 
   const onNewChat = () => {
-    window.dispatchEvent(new CustomEvent('eral:new-chat'));
+    window.dispatchEvent(new CustomEvent('nikita:new-chat'));
   };
 
   const onSelectSession = (id: string) => {
-    window.dispatchEvent(new CustomEvent('eral:select-session', { detail: id }));
+    window.dispatchEvent(new CustomEvent('nikita:select-session', { detail: id }));
   };
 
   const onDeleteSession = (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
-    window.dispatchEvent(new CustomEvent('eral:delete-session', { detail: id }));
+    window.dispatchEvent(new CustomEvent('nikita:delete-session', { detail: id }));
   };
 
   return (

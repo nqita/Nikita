@@ -37,7 +37,7 @@ export function MessageBubble({ message }: Props) {
         <div className="flex-1 min-w-0 flex flex-col gap-2">
           <div className="flex items-center gap-3">
              <span className="text-xs font-bold uppercase tracking-widest text-muted/60">
-               {isUser ? 'You' : 'Eral'}
+               {isUser ? 'You' : 'Nikita'}
              </span>
              {!isUser && (
                <span className="text-[9px] font-bold text-accent uppercase tracking-[0.15em] px-1.5 py-0.5 rounded bg-accent/10 border border-accent/20">
@@ -116,7 +116,7 @@ export function TypingIndicator() {
         </div>
         <div className="flex flex-col gap-2 pt-1">
            <span className="text-xs font-bold uppercase tracking-widest text-muted/60">
-             Eral is writing
+             Nikita is writing
            </span>
            <div className="flex gap-1.5 pt-2">
             {[0, 1, 2].map((i) => (

@@ -1,8 +1,8 @@
 {
-  "name": "@wokspec/eral-extension",
-  "displayName": "Eral Web Extension",
+  "name": "@wokspec/nikita-extension",
+  "displayName": "Nikita Web Extension",
   "version": "0.2.0",
-  "description": "Eral — AI browser extension. Chat with any page, summarize, explain, clip, and download.",
+  "description": "Nikita — AI browser extension. Chat with any page, summarize, explain, clip, and download.",
   "private": true,
   "scripts": {
     "dev": "plasmo dev",
@@ -57,14 +57,14 @@
           "default": "Ctrl+Shift+Y",
           "mac": "Command+Shift+Y"
         },
-        "description": "Clip the current page with Eral"
+        "description": "Clip the current page with Nikita"
       },
       "summarize-page": {
         "suggested_key": {
           "default": "Ctrl+Shift+E",
           "mac": "Command+Shift+E"
         },
-        "description": "Summarize this page with Eral"
+        "description": "Summarize this page with Nikita"
       }
     },
     "side_panel": {

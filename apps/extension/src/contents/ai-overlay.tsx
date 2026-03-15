@@ -1,6 +1,6 @@
 import type { PlasmoCSConfig } from "plasmo"
 import { useState, useEffect, useRef } from "react"
-import { eralChat } from "@/lib/eral"
+import { eralChat } from "@/lib/nikita"
 
 export const config: PlasmoCSConfig = {
   matches: ["<all_urls>"],
@@ -71,8 +71,8 @@ function AIOverlay() {
     } else {
       const { accessToken } = await chrome.storage.session.get(["accessToken"])
       const errMsg = !accessToken
-        ? "Please sign in to your WokSpec account to use Eral AI."
-        : "Failed to connect to Eral service. Please check your network."
+        ? "Please sign in to your WokSpec account to use Nikita AI."
+        : "Failed to connect to Nikita service. Please check your network."
       setMessages([...updatedMessages, { role: "assistant", content: errMsg }])
     }
     setLoading(false)
@@ -100,8 +100,8 @@ function AIOverlay() {
           transition: "all 0.2s ease",
           letterSpacing: "0.05em",
         }}
-        aria-label="Open Eral AI"
-        title="Ask Eral"
+        aria-label="Open Nikita AI"
+        title="Ask Nikita"
       >
         ER
       </button>
@@ -120,7 +120,7 @@ function AIOverlay() {
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px", borderBottom: "1px solid #222", flexShrink: 0, background: "#141414" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <div style={{ width: "24px", height: "24px", background: VIOLET, borderRadius: "6px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "9px", fontWeight: "800", color: "white" }}>ER</div>
-          <span style={{ color: "#fff", fontSize: "14px", fontWeight: 600 }}>Eral Intelligence</span>
+          <span style={{ color: "#fff", fontSize: "14px", fontWeight: 600 }}>Nikita Intelligence</span>
         </div>
         <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
           <button onClick={() => setOpen(false)} style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#888", cursor: "pointer", fontSize: "14px", width: "24px", height: "24px", borderRadius: "6px", display: "flex", alignItems: "center", justifyContent: "center" }}>✕</button>

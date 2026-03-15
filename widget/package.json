@@ -1,8 +1,8 @@
 {
-  "name": "@wokspec/eral-widget",
+  "name": "@wokspec/nikita-widget",
   "version": "0.2.0",
   "private": true,
-  "description": "Embeddable Eral AI chat widget — drop into any website with one script tag",
+  "description": "Embeddable Nikita AI chat widget — drop into any website with one script tag",
   "scripts": {
     "build": "node build.mjs",
     "dev": "node build.mjs --watch",

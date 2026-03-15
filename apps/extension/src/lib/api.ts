@@ -1,5 +1,5 @@
 /**
- * Authenticated API client for the Eral extension.
+ * Authenticated API client for the Nikita extension.
  * Automatically refreshes the access token on 401 and retries the request once.
  * Falls back to signed-out state if refresh fails.
  */

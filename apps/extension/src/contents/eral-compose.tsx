@@ -1,12 +1,12 @@
 /**
- * eral-compose.tsx
- * Injects a small "Write with Eral" button inside focused textareas / contenteditable elements.
- * Clicking it opens an inline panel where Eral can generate or improve the text.
+ * nikita-compose.tsx
+ * Injects a small "Write with Nikita" button inside focused textareas / contenteditable elements.
+ * Clicking it opens an inline panel where Nikita can generate or improve the text.
  */
-import cssText from 'data-text:./eral-compose.css';
+import cssText from 'data-text:./nikita-compose.css';
 import type { PlasmoCSConfig } from 'plasmo';
 import { useEffect, useRef, useState } from 'react';
-import { eralGenerate, getAccessToken } from '../lib/eral';
+import { eralGenerate, getAccessToken } from '../lib/nikita';
 
 export const config: PlasmoCSConfig = {
   matches: ['<all_urls>'],
@@ -16,7 +16,7 @@ export const config: PlasmoCSConfig = {
 export const getStyle = () => {
   const style = document.createElement('style');
   style.textContent = cssText + `
-    @keyframes eral-pulse {
+    @keyframes nikita-pulse {
       0% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.7); }
       70% { box-shadow: 0 0 0 6px rgba(124, 58, 237, 0); }
       100% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0); }
@@ -89,7 +89,7 @@ function ComposeButton() {
       setTimeout(() => {
         if (btnRef.current && document.activeElement &&
           (btnRef.current.contains(document.activeElement) ||
-           document.activeElement.closest?.('[data-eral-compose]'))) return;
+           document.activeElement.closest?.('[data-nikita-compose]'))) return;
         if (!document.activeElement || !isEditableTarget(document.activeElement)) {
           setAnchor(null);
           setPanelOpen(false);
@@ -124,7 +124,7 @@ function ComposeButton() {
       });
       setResult(res?.content ?? '');
     } catch {
-      setResult('Failed to reach Eral. Check your connection.');
+      setResult('Failed to reach Nikita. Check your connection.');
     } finally {
       setLoading(false);
     }
@@ -145,12 +145,12 @@ function ComposeButton() {
       {/* Small floating button anchored to the input */}
       <button
         ref={btnRef}
-        data-eral-compose
+        data-nikita-compose
         onClick={() => {
           setMode(getContent(activeEl!) ? 'improve' : 'generate');
           setPanelOpen(p => !p);
         }}
-        title="Write with Eral"
+        title="Write with Nikita"
         style={{
           position: 'absolute',
           left: anchor.x,
@@ -168,7 +168,7 @@ function ComposeButton() {
           opacity: 0.95,
           boxShadow: '0 4px 12px rgba(124,58,237,0.5)',
           transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-          animation: 'eral-pulse 2s infinite',
+          animation: 'nikita-pulse 2s infinite',
         }}
         onMouseEnter={e => {
           e.currentTarget.style.transform = 'scale(1.15) rotate(-3deg)';
@@ -187,7 +187,7 @@ function ComposeButton() {
       {/* Compose panel */}
       {panelOpen && (
         <div
-          data-eral-compose
+          data-nikita-compose
           style={{
             position: 'absolute',
             left: Math.max(8, anchor.x - 272),
@@ -217,7 +217,7 @@ function ComposeButton() {
             {(['generate', 'improve'] as const).map(m => (
               <button
                 key={m}
-                data-eral-compose
+                data-nikita-compose
                 onClick={() => setMode(m)}
                 style={{
                   flex: 1,
@@ -239,7 +239,7 @@ function ComposeButton() {
 
           {mode === 'generate' && (
             <textarea
-              data-eral-compose
+              data-nikita-compose
               value={prompt}
               onChange={e => setPrompt(e.target.value)}
               placeholder="Describe what to write…"
@@ -262,12 +262,12 @@ function ComposeButton() {
 
           {mode === 'improve' && (
             <div style={{ color: '#888', fontSize: 12, padding: '2px 0' }}>
-              Eral will improve the current text in the field.
+              Nikita will improve the current text in the field.
             </div>
           )}
 
           <button
-            data-eral-compose
+            data-nikita-compose
             onClick={run}
             disabled={loading}
             style={{
@@ -282,7 +282,7 @@ function ComposeButton() {
               opacity: loading ? 0.7 : 1,
             }}
           >
-            {loading ? 'Writing…' : 'Write with Eral'}
+            {loading ? 'Writing…' : 'Write with Nikita'}
           </button>
 
           {result && (
@@ -304,7 +304,7 @@ function ComposeButton() {
               </div>
               <div style={{ display: 'flex', gap: 6 }}>
                 <button
-                  data-eral-compose
+                  data-nikita-compose
                   onClick={applyResult}
                   style={{
                     flex: 1,
@@ -321,7 +321,7 @@ function ComposeButton() {
                   Use this
                 </button>
                 <button
-                  data-eral-compose
+                  data-nikita-compose
                   onClick={() => setResult('')}
                   style={{
                     flex: 1,

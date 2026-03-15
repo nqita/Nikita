@@ -13,7 +13,7 @@ export async function reportError(
         "Content-Type": "application/json",
         ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
       },
-      body: JSON.stringify({ message, stack, url, platform: "eral-extension" }),
+      body: JSON.stringify({ message, stack, url, platform: "nikita-extension" }),
     })
   } catch {
     // Never throw from error reporter

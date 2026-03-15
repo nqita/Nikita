@@ -6,17 +6,17 @@ const features = [
   {
     icon: "✦",
     title: "AI Chat on Any Page",
-    desc: "Ask Eral about any webpage you're browsing. Summarize articles, explain concepts, extract data — all without leaving the tab.",
+    desc: "Ask Nikita about any webpage you're browsing. Summarize articles, explain concepts, extract data — all without leaving the tab.",
   },
   {
     icon: "⬡",
     title: "Selection Toolbar",
-    desc: "Select any text and instantly Explain, Summarize, Improve or Ask Eral. A floating toolbar appears right next to your selection.",
+    desc: "Select any text and instantly Explain, Summarize, Improve or Ask Nikita. A floating toolbar appears right next to your selection.",
   },
   {
     icon: "📋",
     title: "Clip & Save",
-    desc: "Save any page, selection, or link to your Eral library with one click. Searchable and synced across devices.",
+    desc: "Save any page, selection, or link to your Nikita library with one click. Searchable and synced across devices.",
   },
   {
     icon: "⬇️",
@@ -42,7 +42,7 @@ function WelcomePage() {
         >
           ✦
         </div>
-        <h1 className="text-4xl font-bold tracking-tight mb-3">Welcome to Eral</h1>
+        <h1 className="text-4xl font-bold tracking-tight mb-3">Welcome to Nikita</h1>
         <p className="text-[#a1a1aa] text-lg max-w-md">
           Your AI browser extension. Chat with any page, summarize, clip, and more.
         </p>
@@ -94,8 +94,8 @@ function WelcomePage() {
 
       {/* Footer links */}
       <div className="mt-12 flex gap-5 text-xs text-[#52525b]">
-        <a href="https://eral.wokspec.org" target="_blank" rel="noopener noreferrer" className="hover:text-[#a1a1aa]">Eral</a>
-        <a href="https://eral.wokspec.org/docs" target="_blank" rel="noopener noreferrer" className="hover:text-[#a1a1aa]">Docs</a>
+        <a href="https://nikita.wokspec.org" target="_blank" rel="noopener noreferrer" className="hover:text-[#a1a1aa]">Nikita</a>
+        <a href="https://nikita.wokspec.org/docs" target="_blank" rel="noopener noreferrer" className="hover:text-[#a1a1aa]">Docs</a>
         <a href="https://wokspec.org/privacy" target="_blank" rel="noopener noreferrer" className="hover:text-[#a1a1aa]">Privacy</a>
         <a
           onClick={() => chrome.runtime.openOptionsPage()}

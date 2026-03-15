@@ -1,6 +1,6 @@
 import { reportError } from "@/lib/errors"
 import { fetchWithAuth, API_URL } from "@/lib/api"
-import { eralAnalyze } from "@/lib/eral"
+import { eralAnalyze } from "@/lib/nikita"
 
 const SITE_URL = process.env.PLASMO_PUBLIC_SITE_URL ?? "https://wokspec.org"
 
@@ -25,12 +25,12 @@ async function setupContextMenus() {
     const { lastError } = chrome.runtime
     if (lastError) return
 
-    chrome.contextMenus.create({ id: "eral-ask-selection", title: "Ask Eral about this", contexts: ["selection"] })
-    chrome.contextMenus.create({ id: "eral-explain-selection", title: "Explain with Eral", contexts: ["selection"] })
-    chrome.contextMenus.create({ id: "eral-clip-text", title: "Save to Eral", contexts: ["selection"] })
-    chrome.contextMenus.create({ id: "eral-save-image", title: "Save image with Eral", contexts: ["image"] })
-    chrome.contextMenus.create({ id: "eral-save-link", title: "Save link with Eral", contexts: ["link"] })
-    chrome.contextMenus.create({ id: "eral-download-media", title: "Download with Eral", contexts: ["video", "audio"] })
+    chrome.contextMenus.create({ id: "nikita-ask-selection", title: "Ask Nikita about this", contexts: ["selection"] })
+    chrome.contextMenus.create({ id: "nikita-explain-selection", title: "Explain with Nikita", contexts: ["selection"] })
+    chrome.contextMenus.create({ id: "nikita-clip-text", title: "Save to Nikita", contexts: ["selection"] })
+    chrome.contextMenus.create({ id: "nikita-save-image", title: "Save image with Nikita", contexts: ["image"] })
+    chrome.contextMenus.create({ id: "nikita-save-link", title: "Save link with Nikita", contexts: ["link"] })
+    chrome.contextMenus.create({ id: "nikita-download-media", title: "Download with Nikita", contexts: ["video", "audio"] })
   })
 }
 
@@ -48,22 +48,22 @@ chrome.runtime.onStartup.addListener(setupContextMenus)
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (!tab?.id) return
   switch (info.menuItemId) {
-    case "eral-ask-selection":
+    case "nikita-ask-selection":
       chrome.tabs.sendMessage(tab.id, { type: "ERAL_ASK", text: info.selectionText })
       break
-    case "eral-explain-selection":
+    case "nikita-explain-selection":
       chrome.tabs.sendMessage(tab.id, { type: "ERAL_EXPLAIN", text: info.selectionText })
       break
-    case "eral-clip-text":
+    case "nikita-clip-text":
       chrome.tabs.sendMessage(tab.id, { type: "CLIP_SELECTION", text: info.selectionText, pageUrl: info.pageUrl })
       break
-    case "eral-save-image":
+    case "nikita-save-image":
       chrome.tabs.sendMessage(tab.id, { type: "SAVE_IMAGE", srcUrl: info.srcUrl, pageUrl: info.pageUrl })
       break
-    case "eral-save-link":
+    case "nikita-save-link":
       chrome.tabs.sendMessage(tab.id, { type: "SAVE_LINK", linkUrl: info.linkUrl, pageUrl: info.pageUrl })
       break
-    case "eral-download-media":
+    case "nikita-download-media":
       chrome.tabs.sendMessage(tab.id, { type: "DOWNLOAD_MEDIA", srcUrl: info.srcUrl, pageUrl: info.pageUrl })
       break
   }

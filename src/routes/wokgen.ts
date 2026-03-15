@@ -5,14 +5,14 @@ import type { Env, EralUser } from '../types';
 import { requireAuth, rateLimit } from '../middleware';
 import { run, eralSystemPrompt } from '../lib/openai';
 
-const wokgen = new Hono<{ Bindings: Env; Variables: { user: EralUser } }>();
-wokgen.use('*', requireAuth('wokgen'));
+const studio = new Hono<{ Bindings: Env; Variables: { user: EralUser } }>();
+studio.use('*', requireAuth('studio'));
 
-// POST /v1/wokgen/prompt
-// Generates optimized asset/image prompts for use in WokGen.
-wokgen.post(
+// POST /v1/studio/prompt
+// Generates optimized asset/image prompts for use in Studio.
+studio.post(
   '/prompt',
-  rateLimit('wokgen'),
+  rateLimit('studio'),
   zValidator('json', z.object({
     description: z.string().min(1).max(2000).describe('What you want to generate'),
     style: z.enum([
@@ -42,11 +42,11 @@ wokgen.post(
     };
 
     const systemPrompt = eralSystemPrompt(
-      'You are an expert AI image prompt engineer specializing in WokGen asset creation. Generate highly detailed, optimized prompts that produce the best results in AI image generation tools including ComfyUI and Stable Diffusion.'
+      'You are an expert AI image prompt engineer specializing in Studio asset creation. Generate highly detailed, optimized prompts that produce the best results in AI image generation tools including ComfyUI and Stable Diffusion.'
     );
 
     const userMessage = [
-      `Generate ${count} optimized image generation prompt${count > 1 ? 's' : ''} for WokGen.`,
+      `Generate ${count} optimized image generation prompt${count > 1 ? 's' : ''} for Studio.`,
       `Asset description: ${description}`,
       `Style: ${styleGuides[style]}`,
       palette ? `Color palette/mood: ${palette}` : '',
@@ -65,7 +65,7 @@ wokgen.post(
           ],
           maxTokens: count * 400,
           temperature: 0.8,
-          route: 'wokgen',
+          route: 'studio',
           quality: quality ?? 'best',
         },
         {
@@ -75,10 +75,10 @@ wokgen.post(
           preferredProvider: c.env.AI_PROVIDER,
           spendMode: c.env.AI_SPEND_MODE,
           openaiModel: c.env.OPENAI_MODEL,
-          openaiWokgenModel: c.env.OPENAI_WOKGEN_MODEL,
+          openaiWokgenModel: c.env.OPENAI_STUDIO_MODEL,
           groqModel: c.env.GROQ_MODEL,
           cfModel: c.env.CF_AI_MODEL,
-          cfWokgenModel: c.env.CF_AI_WOKGEN_MODEL,
+          cfWokgenModel: c.env.CF_AI_STUDIO_MODEL,
           cfFallbackModel: c.env.CF_AI_FALLBACK_MODEL,
         }
       );
@@ -92,7 +92,7 @@ wokgen.post(
         error: null,
       });
     } catch (err) {
-      console.error('[Eral/wokgen] Error:', err);
+      console.error('[Nikita/studio] Error:', err);
       return c.json(
         { data: null, error: { code: 'AI_ERROR', message: 'Prompt generation failed', status: 500 } },
         500
@@ -101,4 +101,4 @@ wokgen.post(
   }
 );
 
-export { wokgen as wokgenRouter };
+export { studio as studioRouter };

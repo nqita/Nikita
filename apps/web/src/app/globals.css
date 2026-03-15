@@ -1,23 +1,22 @@
 @import "tailwindcss";
 
 :root {
-  /* Anthropic-inspired sophisticated palette */
-  --background: #0d0d0d;
-  --foreground: #ececec;
-  
-  --card: #151515;
-  --card-hover: #1c1c1c;
-  
-  --border: #222222;
-  --border-subtle: #1a1a1a;
-  
-  --muted: #808080;
-  --muted-foreground: #a1a1a1;
-  
-  --accent: #7c3aed;
-  --accent-foreground: #ffffff;
-  --accent-soft: rgba(124, 58, 237, 0.1);
-  --accent-hover: #8b5cf6;
+  --background: #2b0b18;
+  --foreground: #ffe7f4;
+
+  --card: #3a0f20;
+  --card-hover: #4a1226;
+
+  --border: #5c1a36;
+  --border-subtle: #4a142b;
+
+  --muted: #d8a3bf;
+  --muted-foreground: #f6cbe0;
+
+  --accent: #ff5aa5;
+  --accent-foreground: #2b0b18;
+  --accent-soft: rgba(255, 90, 165, 0.18);
+  --accent-hover: #ff78b7;
 
   --font-heading: var(--font-inter, ui-sans-serif, system-ui, sans-serif);
   --font-body: var(--font-inter, ui-sans-serif, system-ui, sans-serif);

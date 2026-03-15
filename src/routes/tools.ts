@@ -5,7 +5,7 @@ import { requireAuth } from '../middleware';
 const tools = new Hono<{ Bindings: Env; Variables: { user: EralUser } }>();
 tools.use('*', requireAuth('*'));
 
-// GET /v1/tools — List available tools for Eral agents
+// GET /v1/tools — List available tools for Nikita agents
 tools.get('/', async (c) => {
   return c.json({
     data: {
@@ -25,7 +25,7 @@ tools.get('/', async (c) => {
         {
           id: 'wokspec-api',
           name: 'WokSpec Integration',
-          description: 'Direct access to WokGen, Vecto, Dilu',
+          description: 'Direct access to Studio, Studio, Dilu',
           capabilities: ['generate-assets', 'deploy-site', 'brand-lookup']
         },
         {

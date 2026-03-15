@@ -1,8 +1,8 @@
 {
-  "name": "@wokspec/eral",
+  "name": "@wokspec/nikita",
   "version": "0.1.0",
   "private": true,
-  "description": "Eral — WokSpec AI. The intelligent layer that integrates across all WokSpec products.",
+  "description": "Nikita — WokSpec AI. The intelligent layer that integrates across all WokSpec products.",
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",

@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { listApiKeys, createApiKey, revokeApiKey } from '@/lib/eral';
+import { listApiKeys, createApiKey, revokeApiKey } from '@/lib/nikita';
 
 interface ApiKey {
   id: string;
@@ -99,7 +99,7 @@ export default function KeysPage() {
       <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem 2rem', borderBottom: '1px solid var(--border)' }}>
         <a href="/chat" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none', color: 'inherit' }}>
           <div style={{ width: '1.75rem', height: '1.75rem', background: accent, borderRadius: '0.4rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.9rem', color: '#fff' }}>E</div>
-          <span style={{ fontWeight: 700, fontSize: '1rem' }}>Eral</span>
+          <span style={{ fontWeight: 700, fontSize: '1rem' }}>Nikita</span>
         </a>
         <div style={{ display: 'flex', gap: '1rem', fontSize: '0.875rem' }}>
           <a href="/chat" style={{ color: 'var(--muted)', textDecoration: 'none' }}>Chat</a>
@@ -111,7 +111,7 @@ export default function KeysPage() {
         <div>
           <h1 style={{ fontWeight: 700, fontSize: '1.5rem', marginBottom: '0.375rem' }}>API Keys</h1>
           <p style={{ color: 'var(--muted)', fontSize: '0.9375rem' }}>
-            Use API keys to embed the Eral widget on any website or call the Eral API directly.
+            Use API keys to embed the Nikita widget on any website or call the Nikita API directly.
           </p>
         </div>
 
@@ -126,7 +126,7 @@ export default function KeysPage() {
             <p style={{ marginTop: '0.875rem', fontSize: '0.8125rem', color: 'var(--muted)' }}>
               Embed on your site:
             </p>
-            <pre style={{ background: 'var(--background)', border: '1px solid var(--border)', borderRadius: '0.5rem', padding: '0.75rem', fontSize: '0.78rem', fontFamily: 'ui-monospace, monospace', overflowX: 'auto', whiteSpace: 'pre-wrap', wordBreak: 'break-word', marginTop: '0.375rem' }}>{`<script src="https://eral.wokspec.org/api/widget.js"\n        data-eral-key="${newKeyValue}"\n        data-eral-name="Eral"\n        data-eral-position="bottom-right">\n</script>`}</pre>
+            <pre style={{ background: 'var(--background)', border: '1px solid var(--border)', borderRadius: '0.5rem', padding: '0.75rem', fontSize: '0.78rem', fontFamily: 'ui-monospace, monospace', overflowX: 'auto', whiteSpace: 'pre-wrap', wordBreak: 'break-word', marginTop: '0.375rem' }}>{`<script src="https://nikita.wokspec.org/api/widget.js"\n        data-nikita-key="${newKeyValue}"\n        data-nikita-name="Nikita"\n        data-nikita-position="bottom-right">\n</script>`}</pre>
             <button style={{ ...btn('ghost'), marginTop: '0.75rem', fontSize: '0.8125rem' }} onClick={() => setNewKeyValue(null)}>Dismiss</button>
           </div>
         )}
@@ -187,10 +187,10 @@ export default function KeysPage() {
           <h2 style={{ fontWeight: 600, fontSize: '0.9375rem', marginBottom: '0.875rem' }}>Quick reference</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.875rem', color: 'var(--muted)' }}>
             <div>
-              <span style={{ fontWeight: 500, color: 'var(--foreground)' }}>Widget embed</span> — add the script tag to your HTML, pass your key as <code style={{ fontFamily: 'ui-monospace, monospace', fontSize: '0.8rem', background: 'var(--background)', padding: '0.1em 0.35em', borderRadius: '4px' }}>data-eral-key</code>
+              <span style={{ fontWeight: 500, color: 'var(--foreground)' }}>Widget embed</span> — add the script tag to your HTML, pass your key as <code style={{ fontFamily: 'ui-monospace, monospace', fontSize: '0.8rem', background: 'var(--background)', padding: '0.1em 0.35em', borderRadius: '4px' }}>data-nikita-key</code>
             </div>
             <div>
-              <span style={{ fontWeight: 500, color: 'var(--foreground)' }}>Direct API</span> — send <code style={{ fontFamily: 'ui-monospace, monospace', fontSize: '0.8rem', background: 'var(--background)', padding: '0.1em 0.35em', borderRadius: '4px' }}>Authorization: Bearer eral_…</code> to <code style={{ fontFamily: 'ui-monospace, monospace', fontSize: '0.8rem', background: 'var(--background)', padding: '0.1em 0.35em', borderRadius: '4px' }}>eral.wokspec.org/api/v1/chat</code>
+              <span style={{ fontWeight: 500, color: 'var(--foreground)' }}>Direct API</span> — send <code style={{ fontFamily: 'ui-monospace, monospace', fontSize: '0.8rem', background: 'var(--background)', padding: '0.1em 0.35em', borderRadius: '4px' }}>Authorization: Bearer eral_…</code> to <code style={{ fontFamily: 'ui-monospace, monospace', fontSize: '0.8rem', background: 'var(--background)', padding: '0.1em 0.35em', borderRadius: '4px' }}>nikita.wokspec.org/api/v1/chat</code>
             </div>
             <div>
               <span style={{ fontWeight: 500, color: 'var(--foreground)' }}>Rate limits</span> — 30 requests/min per key on the free tier

@@ -46,7 +46,7 @@ export function ChatInput({ onSend, disabled }: Props) {
           value={text}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={onKeyDown}
-          placeholder="Try Eral free — Ask anything about WokSpec..."
+          placeholder="Try Nikita free — Ask anything about WokSpec..."
           className="w-full bg-transparent border-none text-[15px] leading-relaxed text-foreground placeholder:text-muted/50 p-5 pr-16 outline-none resize-none font-medium custom-scrollbar min-h-[60px]"
           disabled={disabled}
         />

@@ -28,7 +28,7 @@ keys.post(
   rateLimit('keys'),
   zValidator('json', z.object({
     name:   z.string().min(1).max(100).describe('Human label e.g. "My Website" or "Discord Bot"'),
-    scopes: z.array(z.enum(['chat', 'generate', 'analyze', 'wokgen', '*'])).default(['*']),
+    scopes: z.array(z.enum(['chat', 'generate', 'analyze', 'studio', '*'])).default(['*']),
   })),
   async (c) => {
     const user = c.get('user');

@@ -1,6 +1,6 @@
-# Eral — Full API Reference
+# Nikita — Full API Reference
 
-Base URL: `https://eral.wokspec.org`
+Base URL: `https://nikita.wokspec.org`
 
 All endpoints require `Authorization: Bearer <jwt>` (WokSpec JWT, signed with the shared `JWT_SECRET`).
 
@@ -39,11 +39,11 @@ Stateful conversation. Session history is stored in KV and replayed on subsequen
   "message": "Help me write an isometric tileset prompt",
   "sessionId": "sess_abc123",
   "quality": "balanced",
-  "product": "wokgen",
+  "product":  "studio",
   "integration": {
-    "name": "WokGen Pixel Studio",
+    "name": "Studio Pixel Studio",
     "kind": "webapp",
-    "url": "https://wokgen.wokspec.org/pixel",
+    "url": "https://studio.wokspec.org/pixel",
     "pageTitle": "AI Generator",
     "capabilities": ["chat", "generate"],
     "instructions": "User is generating pixel art. Focus on style and prompt guidance."
@@ -81,7 +81,7 @@ List the authenticated user's chat sessions.
     "sessionId": "sess_abc123",
     "created_at": 1710000000,
     "last_message_at": 1710003600,
-    "product": "wokgen",
+    "product":  "studio",
     "message_count": 12
   }
 ]
@@ -126,7 +126,7 @@ One-shot content generation with optional text transforms.
   "prompt": "Write a product description for a pixel art game asset pack",
   "transform": "expand",
   "quality": "best",
-  "product": "wokgen"
+  "product":  "studio"
 }
 ```
 
@@ -161,7 +161,7 @@ Analyze provided content in one of three modes.
   "content": "Full text or HTML to analyze...",
   "mode": "summarize",
   "quality": "fast",
-  "integration": { "name": "WokPost", "kind": "webapp" }
+  "integration": { "name": "WokHei", "kind": "webapp" }
 }
 ```
 

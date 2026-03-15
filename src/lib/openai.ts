@@ -157,7 +157,7 @@ function pickOpenAIModel(
       return providers.openaiGenerateModel ?? providers.openaiModel ?? DEFAULT_OPENAI_MODEL;
     case 'analyze':
       return providers.openaiAnalyzeModel ?? providers.openaiModel ?? DEFAULT_OPENAI_MODEL;
-    case 'wokgen':
+    case 'studio':
       return providers.openaiWokgenModel ?? providers.openaiGenerateModel ?? providers.openaiModel ?? DEFAULT_OPENAI_MODEL;
   }
 }
@@ -190,7 +190,7 @@ function pickCloudflareModel(
         return providers.cfGenerateModel ?? providers.cfModel;
       case 'analyze':
         return providers.cfAnalyzeModel ?? providers.cfModel;
-      case 'wokgen':
+      case 'studio':
         return providers.cfWokgenModel ?? providers.cfGenerateModel ?? providers.cfModel;
     }
   })();
@@ -235,7 +235,7 @@ function resolveProviderOrder(
 /**
  * Run an inference request.
  * Uses OpenAI GPT-4o when an API key is available; falls back to Cloudflare
- * Workers AI. This abstraction lets us swap to Eral's own model in the future
+ * Workers AI. This abstraction lets us swap to Nikita's own model in the future
  * by replacing the logic here without touching any route code.
  */
 export async function run(
@@ -322,26 +322,26 @@ export async function run(
   throw new Error('No AI provider configured. Set AI binding for Cloudflare AI or provide OPENAI_API_KEY/GROQ_API_KEY.');
 }
 
-/** Build the shared Eral system prompt. */
+/** Build the shared Nikita system prompt. */
 export function eralSystemPrompt(extras?: string): string {
   return [
-    'You are WokSpec\'s Chief Architect. You are the intelligence behind Eral, the enterprise-grade AI runtime.',
-    'Positioning: Eral powers WokSpec AI: context-aware agents that understand your workspace and act across web + internal apps.',
+    'You are WokSpec\'s Chief Architect. You are the intelligence behind Nikita, the enterprise-grade AI runtime.',
+    'Positioning: Nikita powers WokSpec AI: context-aware agents that understand your workspace and act across web + internal apps.',
     '',
     'Core Agent Directives:',
     '1. Tone: Professional Chief Architect. Direct, high-signal, zero-fluff. No emojis unless debugging pixel art.',
     '2. Context: You have deep visibility into the user\'s workspace, projects, and assets. Always prioritize workspace context.',
-    '3. Action-Oriented: You don\'t just talk; you execute. You can call tools for browser automation, file I/O, and WokSpec internal APIs (WokGen, Vecto, Dilu, WokForge, WokTool).',
+    '3. Action-Oriented: You don\'t just talk; you execute. You can call tools for browser automation, file I/O, and WokSpec internal APIs (Studio, Studio, Dilu, Autiladus, Studio).',
     '4. Accuracy: Factual precision is mandatory. If a task requires a tool you cannot currently reach, specify the exact API call needed.',
     '',
     'WokSpec Ecosystem Knowledge (Integration Points):',
-    '- WokGen: Use for generating and optimizing creative assets/pixel art.',
-    '- Vecto: Respect brand kits and visual identity systems in all generated output.',
+    '- Studio: Use for generating and optimizing creative assets/pixel art.',
+    '- Studio: Respect brand kits and visual identity systems in all generated output.',
     '- Dilu: Your target for deploying and monitoring production sites.',
-    '- WokForge: The workflow engine where you execute complex multi-step agent tasks.',
-    '- WokTool: Your utility belt for rapid browser-based processing.',
+    '- Autiladus: The workflow engine where you execute complex multi-step agent tasks.',
+    '- Studio: Your utility belt for rapid browser-based processing.',
     '',
-    'When greeting a new enterprise user: "Hey — I\'m Eral. Ask me anything about WokSpec, the work, or what we can build together."',
+    'When greeting a new enterprise user: "Hey — I\'m Nikita. Ask me anything about WokSpec, the work, or what we can build together."',
     '',
     extras ?? '',
   ].filter(Boolean).join('\n');

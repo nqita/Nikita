@@ -1,4 +1,4 @@
-const ERAL_API = process.env.NEXT_PUBLIC_ERAL_API_URL ?? 'https://eral.wokspec.org/api';
+const ERAL_API = process.env.NEXT_PUBLIC_ERAL_API_URL ?? 'https://nikita.wokspec.org/api';
 
 export interface ChatMessage {
   role: 'user' | 'assistant';
@@ -56,7 +56,7 @@ function buildHeaders(): HeadersInit {
   const anonId = getAnonId();
   const h: Record<string, string> = { 
     'Content-Type': 'application/json',
-    'X-Eral-Anon-Id': anonId
+    'X-Nikita-Anon-Id': anonId
   };
   if (key) {
     h['Authorization'] = `Bearer ${key}`;

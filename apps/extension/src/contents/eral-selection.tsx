@@ -1,6 +1,6 @@
 import type { PlasmoCSConfig } from "plasmo"
 import { useState, useEffect, useRef, useCallback } from "react"
-import { eralAnalyze, eralGenerate, getAccessToken, type AnalyzeType } from "@/lib/eral"
+import { eralAnalyze, eralGenerate, getAccessToken, type AnalyzeType } from "@/lib/nikita"
 
 export const config: PlasmoCSConfig = {
   matches: ["<all_urls>"],
@@ -108,7 +108,7 @@ function EralSelectionToolbar() {
 
     const token = await getAccessToken()
     if (!token) {
-      setResult({ visible: true, loading: false, content: "Sign in to use Eral AI features.", type })
+      setResult({ visible: true, loading: false, content: "Sign in to use Nikita AI features.", type })
       return
     }
 
@@ -133,7 +133,7 @@ function EralSelectionToolbar() {
     { label: "Explain", type: "explain", title: "Explain this text" },
     { label: "Summarize", type: "summarize", title: "Summarize this text" },
     { label: "Improve", type: "improve", title: "Improve this text" },
-    { label: "Ask", type: "ask", title: "Ask Eral about this" },
+    { label: "Ask", type: "ask", title: "Ask Nikita about this" },
   ]
 
   if (!enabled || !toolbar.visible) return null
@@ -218,7 +218,7 @@ function EralSelectionToolbar() {
                 {result.content}
               </div>
               <div style={{ marginTop: "10px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <span style={{ color: "#52525b", fontSize: "11px" }}>Eral · {result.type}</span>
+                <span style={{ color: "#52525b", fontSize: "11px" }}>Nikita · {result.type}</span>
                 <div style={{ display: "flex", gap: "6px" }}>
                   <button
                     onClick={() => navigator.clipboard.writeText(result.content)}

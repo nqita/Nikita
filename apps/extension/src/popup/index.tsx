@@ -97,7 +97,7 @@ function Popup() {
     {
       key: "sidepanel",
       icon: "✦",
-      label: "Ask Eral",
+      label: "Ask Nikita",
       onClick: handleOpenSidePanel,
       violet: true,
     },
@@ -129,10 +129,10 @@ function Popup() {
       loading: actionStatus.save === "loading",
     },
     {
-      key: "wokgen",
+      key:  "studio",
       icon: "◈",
-      label: "Open WokGen",
-      onClick: () => chrome.tabs.create({ url: "https://wokgen.wokspec.org" }),
+      label: "Open Studio",
+      onClick: () => chrome.tabs.create({ url: "https://studio.wokspec.org" }),
     },
   ]
 
@@ -142,15 +142,15 @@ function Popup() {
       <div className="flex items-center justify-between border-b border-[#27272a] px-4 py-3">
         <div className="flex items-center gap-2">
           <span style={{ color: VIOLET }} className="text-base">✦</span>
-          <span className="text-sm font-semibold tracking-tight">Eral</span>
+          <span className="text-sm font-semibold tracking-tight">Nikita</span>
         </div>
         <a
-          href="https://eral.wokspec.org"
+          href="https://nikita.wokspec.org"
           target="_blank"
           rel="noopener noreferrer"
           className="text-xs text-[#a1a1aa] hover:text-[#fafafa] transition-colors"
         >
-          eral.wokspec.org ↗
+          nikita.wokspec.org ↗
         </a>
       </div>
 
@@ -221,7 +221,7 @@ function Popup() {
         <div className="p-4">
           <div className="flex items-center gap-2 mb-3">
             <span style={{ color: VIOLET }} className="text-xl">✦</span>
-            <p className="text-sm font-medium">Sign in to Eral</p>
+            <p className="text-sm font-medium">Sign in to Nikita</p>
           </div>
           <p className="text-xs text-[#a1a1aa] mb-4">
             Chat with any page, summarize content, clip pages, and download media.

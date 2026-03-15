@@ -9,12 +9,12 @@ const ctx = await esbuild.context({
   bundle: true,
   minify: !watch,
   format: 'iife',
-  outfile: '../dist/eral-widget.js',
+  outfile: '../dist/nikita-widget.js',
   platform: 'browser',
   target: ['es2020', 'chrome80', 'firefox75', 'safari14'],
   define: { 'process.env.NODE_ENV': watch ? '"development"' : '"production"' },
   banner: {
-    js: '/* Eral Widget v0.2.0 — eral.wokspec.org — MIT */',
+    js: '/* Nikita Widget v0.2.0 — nikita.wokspec.org — MIT */',
   },
 });
 
@@ -24,8 +24,8 @@ if (watch) {
 } else {
   await ctx.rebuild();
   await mkdir('../dist', { recursive: true });
-  const bundle = await readFile('../dist/eral-widget.js', 'utf8');
-  await writeFile('../dist/eral-widget.txt', bundle, 'utf8');
+  const bundle = await readFile('../dist/nikita-widget.js', 'utf8');
+  await writeFile('../dist/nikita-widget.txt', bundle, 'utf8');
   await ctx.dispose();
-  console.log('Built: ../dist/eral-widget.js and ../dist/eral-widget.txt');
+  console.log('Built: ../dist/nikita-widget.js and ../dist/nikita-widget.txt');
 }

@@ -1,20 +1,20 @@
-# Eral — Architecture
+# Nikita — Architecture
 
 ## Overview
 
-Eral is a Cloudflare Worker built with Hono that acts as WokSpec's shared AI service. It is fronted by WokAPI at `/v1/ai/*` for most products, but can also be called directly by those that deploy Eral's widget or extension.
+Nikita is a Cloudflare Worker built with Hono that acts as WokSpec's shared AI service. It is fronted by WokAPI at `/v1/ai/*` for most products, but can also be called directly by those that deploy Nikita's widget or extension.
 
-Eral's design priorities:
+Nikita's design priorities:
 1. **Free first** — default to Cloudflare Workers AI (billed against Cloudflare account, not per-call)
-2. **Memory** — every conversation is stored in KV keyed by `session:<id>`, giving Eral consistent context across pages and sessions
-3. **Context-aware** — integration metadata from the calling product shapes prompt construction without hardcoding product logic in Eral
+2. **Memory** — every conversation is stored in KV keyed by `session:<id>`, giving Nikita consistent context across pages and sessions
+3. **Context-aware** — integration metadata from the calling product shapes prompt construction without hardcoding product logic in Nikita
 
 ---
 
 ## Component Map
 
 ```
-Eral Worker (Cloudflare Workers)
+Nikita Worker (Cloudflare Workers)
   ├── apps/api/               Hono application
   │   ├── routes/chat.ts      Stateful conversation + KV memory
   │   ├── routes/generate.ts  One-shot generation + transforms
@@ -24,20 +24,20 @@ Eral Worker (Cloudflare Workers)
   │       └── rateLimit.ts    KV-based rate limiting per user
   │
   ├── apps/extension/         Plasmo browser extension
-  │   ├── sidepanel/          Side-panel Eral UI
+  │   ├── sidepanel/          Side-panel Nikita UI
   │   ├── content/            Content scripts (page context, text clip)
   │   └── background/         Service worker (session management)
   │
   └── widget/                 Embeddable widget (Shadow DOM)
-      ├── widget.ts           Entry point — reads data-eral-* attributes
-      └── EralPanel.tsx       Chat panel React component
+      ├── widget.ts           Entry point — reads data-nikita-* attributes
+      └── NikitaPanel.tsx       Chat panel React component
 ```
 
 ---
 
 ## AI Provider Routing
 
-Eral selects the AI provider based on a spend policy and optional caller-specified `quality` parameter:
+Nikita selects the AI provider based on a spend policy and optional caller-specified `quality` parameter:
 
 ```
 Request arrives with quality: "fast" | "balanced" | "best"
@@ -59,7 +59,7 @@ Each route can also override model via environment variables:
 - `CF_AI_CHAT_MODEL` (default: `@cf/meta/llama-3.3-70b-instruct-fp8-fast`)
 - `CF_AI_GENERATE_MODEL`
 - `CF_AI_ANALYZE_MODEL`
-- `CF_AI_WOKGEN_MODEL`
+- `CF_AI_STUDIO_MODEL`
 - Matching `OPENAI_*` variants
 
 ---
@@ -77,7 +77,7 @@ KV_MEMORY:sess_abc123  →
     { "role": "user", "content": "...", "ts": 1710000000 },
     { "role": "assistant", "content": "...", "ts": 1710000001 }
   ],
-  "integration": { "name": "WokGen", "product": "wokgen" }
+  "integration": { "name": "Studio", "product":  "studio" }
 }
 ```
 
@@ -87,16 +87,16 @@ Messages are trimmed to the last N tokens before being sent to the AI provider t
 
 ## Prompt Construction
 
-Eral builds a system prompt dynamically:
+Nikita builds a system prompt dynamically:
 
 ```
-Base persona: "You are Eral, WokSpec's AI assistant..."
+Base persona: "You are Nikita, WokSpec's AI assistant..."
 + Integration instructions (from request.integration.instructions)
 + Product context (name, URL, capabilities)
 + User memory summary (if enabled)
 ```
 
-This means the same Eral instance behaves as a pixel art advisor in WokGen, a brand consultant in Vecto, and a general assistant on wokspec.org — without any branching logic in the Worker.
+This means the same Nikita instance behaves as a pixel art advisor in Studio, a brand consultant in Studio, and a general assistant on wokspec.org — without any branching logic in the Worker.
 
 ---
 
@@ -105,18 +105,18 @@ This means the same Eral instance behaves as a pixel art advisor in WokGen, a br
 The widget runs entirely in a Shadow DOM to prevent style leakage:
 
 ```html
-<div id="eral-widget-root">
+<div id="nikita-widget-root">
   #shadow-root
     <link rel="stylesheet" href="...">  ← scoped styles
-    <EralPanel />                        ← React app
+    <NikitaPanel />                        ← React app
 </div>
 ```
 
-It reads configuration from `data-eral-*` attributes on the `<script>` tag and exposes:
-- `window.EralWidget` — primary API
-- `window.Eral` — compatibility alias
+It reads configuration from `data-nikita-*` attributes on the `<script>` tag and exposes:
+- `window.NikitaWidget` — primary API
+- `window.Nikita` — compatibility alias
 
-The widget authenticates by exchanging the `data-eral-key` for a short-lived session token on first load.
+The widget authenticates by exchanging the `data-nikita-key` for a short-lived session token on first load.
 
 ---
 
@@ -126,7 +126,7 @@ The widget authenticates by exchanging the `data-eral-key` for a short-lived ses
 Chat history is a blob of JSON that grows over time. KV is ideal for large opaque values read/written as a unit. D1 row-per-message would require expensive aggregation queries on every chat request.
 
 **Why run in free-only mode by default?**  
-Eral is embedded across many pages — some of which are public-facing with no user auth. Defaulting to the free Workers AI path ensures there's no unintended spend from unauthenticated widget loads.
+Nikita is embedded across many pages — some of which are public-facing with no user auth. Defaulting to the free Workers AI path ensures there's no unintended spend from unauthenticated widget loads.
 
 **Why Shadow DOM for the widget?**  
-Eral is designed to drop into any third-party page. Without Shadow DOM, the host page's CSS would bleed into the widget panel, making it impossible to guarantee consistent rendering.
+Nikita is designed to drop into any third-party page. Without Shadow DOM, the host page's CSS would bleed into the widget panel, making it impossible to guarantee consistent rendering.

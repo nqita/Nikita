@@ -41,8 +41,8 @@ npm run package
 > • **Page Clipping** — Select any text, image, or link and save it to your WokSpec account
 > • **Media Downloader** — Download YouTube videos as MP4, MP3, or WAV. Also supports Instagram Reels, TikTok, Twitter/X, and Reddit
 > • **Social Saver** — Floating save buttons on tweets, Instagram posts, and Reddit threads
-> • **Ask Eral** — WokSpec's AI assistant overlaid on any page. Ask questions, get summaries, or analyze content
-> • **Side Panel Launcher** — Quick access to WokGen, WokPost, and Chopsticks without leaving your current tab
+> • **Ask Nikita** — WokSpec's AI assistant overlaid on any page. Ask questions, get summaries, or analyze content
+> • **Side Panel Launcher** — Quick access to Studio, WokHei, and Chopsticks without leaving your current tab
 > • **Context Menu** — Right-click to clip, save, or download anything
 >
 > **Sign in with your WokSpec account** to sync clips and unlock all features. Works with GitHub, Google, or Discord login.

@@ -1,11 +1,11 @@
 {
-  "name": "eral-web",
+  "name": "nikita-web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "deploy": "npm run build && wrangler pages deploy out --project-name eral --branch main",
+    "deploy": "npm run build && wrangler pages deploy out --project-name nikita --branch main",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {

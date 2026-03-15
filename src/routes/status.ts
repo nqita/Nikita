@@ -26,9 +26,9 @@ function routeModels(c: { env: Env }) {
       openai: c.env.OPENAI_ANALYZE_MODEL ?? c.env.OPENAI_MODEL ?? DEFAULT_OPENAI_MODEL,
       groq,
     },
-    wokgen: {
-      cloudflare: c.env.CF_AI_WOKGEN_MODEL ?? c.env.CF_AI_GENERATE_MODEL ?? c.env.CF_AI_MODEL ?? DEFAULT_CF_MODEL,
-      openai: c.env.OPENAI_WOKGEN_MODEL ?? c.env.OPENAI_GENERATE_MODEL ?? c.env.OPENAI_MODEL ?? DEFAULT_OPENAI_MODEL,
+    studio: {
+      cloudflare: c.env.CF_AI_STUDIO_MODEL ?? c.env.CF_AI_GENERATE_MODEL ?? c.env.CF_AI_MODEL ?? DEFAULT_CF_MODEL,
+      openai: c.env.OPENAI_STUDIO_MODEL ?? c.env.OPENAI_GENERATE_MODEL ?? c.env.OPENAI_MODEL ?? DEFAULT_OPENAI_MODEL,
       groq,
     },
     cloudflare_fallback: c.env.CF_AI_FALLBACK_MODEL ?? DEFAULT_CF_FALLBACK_MODEL,
@@ -64,7 +64,7 @@ status.get('/', async (c) => {
 
   return c.json({
     data: {
-      service: 'Eral',
+      service: 'Nikita',
       version: '0.4.0',
       status: 'operational',
       timestamp: new Date().toISOString(),
@@ -72,7 +72,7 @@ status.get('/', async (c) => {
         chat: true,
         generate: true,
         analyze: true,
-        wokgen: true,
+        studio: true,
         widget: true,
         browser_extension: true,
         generic_integration_context: true,

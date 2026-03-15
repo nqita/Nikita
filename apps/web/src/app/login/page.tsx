@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 const WOKAPI = 'https://api.wokspec.org';
-const ERAL_CALLBACK = 'https://eral.wokspec.org/auth/callback';
+const ERAL_CALLBACK = 'https://nikita.wokspec.org/auth/callback';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -32,7 +32,7 @@ export default function LoginPage() {
     if (!trimmed) { setError('Please enter your API key.'); return; }
     setIsSubmitting(true);
     try {
-      const res = await fetch('https://eral.wokspec.org/api/v1/status', {
+      const res = await fetch('https://nikita.wokspec.org/api/v1/status', {
         headers: { Authorization: `Bearer ${trimmed}` },
       });
       if (res.status === 401) {
@@ -60,7 +60,7 @@ export default function LoginPage() {
         {/* Logo */}
         <div style={{ textAlign: 'center' }}>
           <div style={{ width: '3rem', height: '3rem', background: 'var(--accent)', borderRadius: '0.875rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '1.375rem', color: '#fff', margin: '0 auto 1rem' }}>E</div>
-          <h1 style={{ fontWeight: 700, fontSize: '1.375rem', color: 'var(--foreground)', marginBottom: '0.375rem' }}>Sign in to Eral</h1>
+          <h1 style={{ fontWeight: 700, fontSize: '1.375rem', color: 'var(--foreground)', marginBottom: '0.375rem' }}>Sign in to Nikita</h1>
           <p style={{ fontSize: '0.875rem', color: 'var(--muted)' }}>Use your WokSpec account or an API key.</p>
         </div>
 

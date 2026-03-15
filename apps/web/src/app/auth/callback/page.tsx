@@ -18,7 +18,7 @@ export default function AuthCallbackPage() {
       return;
     }
 
-    // Store the WokSpec JWT as the Eral token (Eral Worker accepts WokSpec JWTs)
+    // Store the WokSpec JWT as the Nikita token (Nikita Worker accepts WokSpec JWTs)
     localStorage.setItem('eral_token', accessToken);
     router.replace('/chat');
   }, [router]);

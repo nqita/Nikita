@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'API Reference — Eral',
-  description: 'Complete Eral API reference. Chat, generate, analyze, WokGen prompts, API key management, and embeddable widget.',
+  title: 'API Reference — Nikita',
+  description: 'Complete Nikita API reference. Chat, generate, analyze, Studio prompts, API key management, and embeddable widget.',
 };
 
 // ── Primitives ────────────────────────────────────────────────────────────────
@@ -266,7 +266,7 @@ export default function DocsPage() {
       <nav style={S.nav}>
         <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none', color: 'inherit' }}>
           <div style={{ width: '1.75rem', height: '1.75rem', background: accent, borderRadius: '0.4rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.9rem', color: '#fff' }}>E</div>
-          <span style={{ fontWeight: 700, fontSize: '1rem' }}>Eral</span>
+          <span style={{ fontWeight: 700, fontSize: '1rem' }}>Nikita</span>
         </a>
         <div style={{ display: 'flex', gap: '1.25rem', fontSize: '0.875rem' }}>
           <a href="/chat" style={{ color: 'var(--muted)', textDecoration: 'none' }}>Chat</a>
@@ -286,7 +286,7 @@ export default function DocsPage() {
           <NavLink href="#chat">Chat</NavLink>
           <NavLink href="#generate">Generate</NavLink>
           <NavLink href="#analyze">Analyze</NavLink>
-          <NavLink href="#wokgen">WokGen Prompts</NavLink>
+          <NavLink href="#studio">Studio Prompts</NavLink>
           <NavLink href="#keys">API Keys</NavLink>
           <NavLink href="#widget">Widget Embed</NavLink>
           <NavLink href="#errors">Errors</NavLink>
@@ -299,16 +299,16 @@ export default function DocsPage() {
           {/* ── Overview ── */}
           <section id="overview">
             <h1 style={{ fontWeight: 800, fontSize: '1.875rem', letterSpacing: '-0.03em', marginBottom: '0.75rem' }}>
-              Eral API Reference
+              Nikita API Reference
             </h1>
             <p style={S.muted}>
-              The Eral API is a Cloudflare Worker at <code style={S.inlineCode}>https://eral.wokspec.org/api</code>.
-              It provides conversational AI, content generation, content analysis, WokGen prompt engineering, and
-              API key management — all secured by WokSpec JWTs or Eral API keys.
+              The Nikita API is a Cloudflare Worker at <code style={S.inlineCode}>https://nikita.wokspec.org/api</code>.
+              It provides conversational AI, content generation, content analysis, Studio prompt engineering, and
+              API key management — all secured by WokSpec JWTs or Nikita API keys.
             </p>
             <div style={{ ...S.card, padding: '1.25rem' }}>
               <div style={{ fontSize: '0.825rem', color: 'var(--muted)', marginBottom: '0.75rem', fontWeight: 600 }}>Base URL</div>
-              <code style={{ ...S.inlineCode, fontSize: '0.875rem' }}>https://eral.wokspec.org/api</code>
+              <code style={{ ...S.inlineCode, fontSize: '0.875rem' }}>https://nikita.wokspec.org/api</code>
             </div>
 
             <h3 style={S.h3}>All endpoints</h3>
@@ -319,7 +319,7 @@ export default function DocsPage() {
             <EndpointRow method="DELETE" path="/v1/chat/:sessionId" desc="Clear session memory" />
             <EndpointRow method="POST"   path="/v1/generate"       desc="Generate posts, code, docs, emails…" />
             <EndpointRow method="POST"   path="/v1/analyze"        desc="Summarize, review, extract, sentiment…" />
-            <EndpointRow method="POST"   path="/v1/wokgen/prompt"  desc="Optimized AI image prompts for WokGen" />
+            <EndpointRow method="POST"   path="/v1/studio/prompt"  desc="Optimized AI image prompts for Studio" />
             <EndpointRow method="GET"    path="/v1/keys"           desc="List your API keys" />
             <EndpointRow method="POST"   path="/v1/keys"           desc="Create a new API key" />
             <EndpointRow method="DELETE" path="/v1/keys/:id"       desc="Revoke an API key" />
@@ -338,7 +338,7 @@ export default function DocsPage() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.875rem', marginBottom: '1.5rem' }}>
               {[
                 { title: 'WokSpec JWT', desc: 'For WokSpec users. Obtained via OAuth sign-in. Short-lived (15 min), auto-refreshed.', prefix: 'eyJ…' },
-                { title: 'Eral API Key', desc: 'For embedding or server-to-server use. Create one on the Keys page. Long-lived.', prefix: 'eral_…' },
+                { title: 'Nikita API Key', desc: 'For embedding or server-to-server use. Create one on the Keys page. Long-lived.', prefix: 'eral_…' },
               ].map(({ title, desc, prefix }) => (
                 <div key={title} style={{ background: 'var(--card)', border: '1px solid var(--border)', borderRadius: '0.75rem', padding: '1.125rem' }}>
                   <div style={{ fontWeight: 600, marginBottom: '0.375rem' }}>{title}</div>
@@ -367,10 +367,10 @@ Content-Type: application/json`}
               { name: 'message',   type: 'string',  required: true,  desc: 'The user message to send' },
               { name: 'sessionId', type: 'string',  required: false, desc: 'Existing session ID to continue. Omit to start a new session.' },
               { name: 'context',   type: 'string',  required: false, desc: 'Additional context injected into the system prompt (e.g. page content, product name)' },
-              { name: 'source',    type: 'string',  required: false, desc: 'Origin product identifier (e.g. "wokpost", "wokgen", "widget")' },
+              { name: 'source',    type: 'string',  required: false, desc: 'Origin product identifier (e.g. "wokhei", "studio", "widget")' },
             ]} />
             <CodeBlock lang="bash">
-{`curl https://eral.wokspec.org/api/v1/chat \\
+{`curl https://nikita.wokspec.org/api/v1/chat \\
   -H "Authorization: Bearer eral_..." \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -422,10 +422,10 @@ Content-Type: application/json`}
               { name: 'context', type: 'string',  required: false, desc: 'Existing content or additional context (max 8000 chars)' },
               { name: 'tone',    type: "'professional' | 'casual' | 'technical' | 'playful'", required: false, desc: 'Writing tone', default: 'casual' },
               { name: 'length',  type: "'short' | 'medium' | 'long'", required: false, desc: 'Approximate output length', default: 'medium' },
-              { name: 'product', type: "'woksite' | 'wokgen' | 'wokpost' | 'chopsticks'", required: false, desc: 'Tailor output for a specific WokSpec product' },
+              { name: 'product', type: "'woksite' | 'studio' | 'wokhei' | 'api' | 'autiladus'", required: false, desc: 'Tailor output for a specific WokSpec product' },
             ]} />
             <CodeBlock lang="bash">
-{`curl https://eral.wokspec.org/api/v1/generate \\
+{`curl https://nikita.wokspec.org/api/v1/generate \\
   -H "Authorization: Bearer eral_..." \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -438,7 +438,7 @@ Content-Type: application/json`}
             <CodeBlock lang="json — response">
 {`{
   "data": {
-    "content": "Just shipped pixel art generation with WokGen 🎨...",
+    "content": "Just shipped pixel art generation with Studio 🎨...",
     "type": "post",
     "model": { "provider": "openai", "model": "gpt-4o" }
   },
@@ -463,7 +463,7 @@ Content-Type: application/json`}
               { name: 'focus',   type: 'string',  required: false, desc: 'Specific aspect to focus on (max 500 chars)' },
             ]} />
             <CodeBlock lang="bash">
-{`curl https://eral.wokspec.org/api/v1/analyze \\
+{`curl https://nikita.wokspec.org/api/v1/analyze \\
   -H "Authorization: Bearer eral_..." \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -484,15 +484,15 @@ Content-Type: application/json`}
             </CodeBlock>
           </section>
 
-          {/* ── WokGen ── */}
-          <section id="wokgen">
-            <h2 style={S.h2}>WokGen Prompts</h2>
+          {/* ── Studio ── */}
+          <section id= "studio">
+            <h2 style={S.h2}>Studio Prompts</h2>
             <hr style={S.divider} />
             <p style={S.muted}>
-              Generate highly optimized image generation prompts for use in WokGen — tailored for Stable Diffusion, FLUX, and ComfyUI pipelines.
+              Generate highly optimized image generation prompts for use in Studio — tailored for Stable Diffusion, FLUX, and ComfyUI pipelines.
             </p>
 
-            <h3 style={S.h3}><span style={S.method('POST')}>POST</span> /v1/wokgen/prompt</h3>
+            <h3 style={S.h3}><span style={S.method('POST')}>POST</span> /v1/studio/prompt</h3>
             <ParamsTable params={[
               { name: 'description', type: 'string',  required: true,  desc: 'What you want to generate (max 2000 chars)' },
               { name: 'style',       type: "'pixel-art' | 'isometric' | 'flat-icon' | 'concept-art' | 'sprite-sheet' | 'ui-asset'", required: false, desc: 'Asset style', default: 'pixel-art' },
@@ -501,7 +501,7 @@ Content-Type: application/json`}
               { name: 'count',       type: 'integer', required: false, desc: 'Number of prompt variations (1–5)', default: '1' },
             ]} />
             <CodeBlock lang="bash">
-{`curl https://eral.wokspec.org/api/v1/wokgen/prompt \\
+{`curl https://nikita.wokspec.org/api/v1/studio/prompt \\
   -H "Authorization: Bearer eral_..." \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -582,42 +582,42 @@ Content-Type: application/json`}
             <h3 style={S.h3}>Script tag (recommended)</h3>
             <CodeBlock lang="html">
 {`<script
-  src="https://eral.wokspec.org/api/widget.js"
-  data-eral-key="eral_your_key_here"
-  data-eral-name="Eral"
-  data-eral-color="#7c3aed"
-  data-eral-position="bottom-right"
-  data-eral-greeting="Hi! How can I help?"
+  src="https://nikita.wokspec.org/api/widget.js"
+  data-nikita-key="eral_your_key_here"
+  data-nikita-name="Nikita"
+  data-nikita-color="#7c3aed"
+  data-nikita-position="bottom-right"
+  data-nikita-greeting="Hi! How can I help?"
 ></script>`}
             </CodeBlock>
 
             <h3 style={S.h3}>Data attributes</h3>
             <ParamsTable params={[
-              { name: 'data-eral-key',      type: 'string', required: true,  desc: 'Your Eral API key' },
-              { name: 'data-eral-name',     type: 'string', required: false, desc: 'Display name shown in the widget header', default: 'Eral' },
-              { name: 'data-eral-color',    type: 'string', required: false, desc: 'Brand color (hex)', default: '#7c3aed' },
-              { name: 'data-eral-position', type: "'bottom-right' | 'bottom-left'", required: false, desc: 'Widget position on screen', default: 'bottom-right' },
-              { name: 'data-eral-greeting', type: 'string', required: false, desc: 'Initial message shown in the chat', default: "Hi! I'm Eral…" },
-              { name: 'data-eral-placeholder', type: 'string', required: false, desc: 'Input placeholder text', default: 'Ask me anything...' },
+              { name: 'data-nikita-key',      type: 'string', required: true,  desc: 'Your Nikita API key' },
+              { name: 'data-nikita-name',     type: 'string', required: false, desc: 'Display name shown in the widget header', default: 'Nikita' },
+              { name: 'data-nikita-color',    type: 'string', required: false, desc: 'Brand color (hex)', default: '#7c3aed' },
+              { name: 'data-nikita-position', type: "'bottom-right' | 'bottom-left'", required: false, desc: 'Widget position on screen', default: 'bottom-right' },
+              { name: 'data-nikita-greeting', type: 'string', required: false, desc: 'Initial message shown in the chat', default: "Hi! I'm Nikita…" },
+              { name: 'data-nikita-placeholder', type: 'string', required: false, desc: 'Input placeholder text', default: 'Ask me anything...' },
             ]} />
 
             <h3 style={S.h3}>Imperative API</h3>
             <p style={{ ...S.muted, marginBottom: '0.75rem' }}>
-              After the script loads, <code style={S.inlineCode}>window.Eral</code> exposes an imperative API:
+              After the script loads, <code style={S.inlineCode}>window.Nikita</code> exposes an imperative API:
             </p>
             <CodeBlock lang="javascript">
 {`// Init programmatically (skips data-attribute auto-init)
-window.Eral.init({
+window.Nikita.init({
   apiKey:    'eral_...',
-  name:      'Eral',
+  name:      'Nikita',
   color:     '#7c3aed',
   position:  'bottom-right',
   greeting:  'Hi! How can I help?',
 });
 
-window.Eral.open();     // open the chat panel
-window.Eral.close();    // close the chat panel
-window.Eral.destroy();  // remove from DOM`}
+window.Nikita.open();     // open the chat panel
+window.Nikita.close();    // close the chat panel
+window.Nikita.destroy();  // remove from DOM`}
             </CodeBlock>
           </section>
 
@@ -690,7 +690,7 @@ window.Eral.destroy();  // remove from DOM`}
                     { group: '/v1/chat',           limit: '30 req',  window: '1 min' },
                     { group: '/v1/generate',        limit: '20 req',  window: '1 min' },
                     { group: '/v1/analyze',         limit: '30 req',  window: '1 min' },
-                    { group: '/v1/wokgen/prompt',   limit: '20 req',  window: '1 min' },
+                    { group: '/v1/studio/prompt',   limit: '20 req',  window: '1 min' },
                     { group: '/v1/keys',            limit: '10 req',  window: '1 min' },
                   ].map(({ group, limit, window: w }) => (
                     <tr key={group}>

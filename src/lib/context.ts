@@ -3,19 +3,11 @@ import type { EralUser, IntegrationContext, IntegrationMetadataValue, KnownProdu
 
 export const KNOWN_PRODUCTS = [
   'woksite',
-  'wokgen',
-  'wokpost',
-  'chopsticks',
+  'studio',
+  'wokhei',
+  'api',
+  'autiladus',
   'extension',
-  'dilu',
-  'vecto',
-  'woktool',
-  'wokid',
-  'wokpay',
-  'wokcloud',
-  'wokbase',
-  'wokflow',
-  'wokplay',
   'wokspec',
 ] as const;
 
@@ -51,21 +43,13 @@ export const IntegrationSchema = z
   .optional();
 
 const PRODUCT_DESCRIPTIONS: Record<KnownProduct, string> = {
-  woksite: 'WokSite — The central WokSpec ecosystem hub for bookings, SSO, and community.',
-  wokgen: 'WokGen — AI-powered asset generation for pixel art, images, and creative media.',
-  wokpost: 'WokPost — Workflow-centric social media platform designed for builders and developers.',
-  chopsticks: 'Chopsticks — Discord integration and community management dashboard for WokSpec.',
-  extension: 'WokSpec Extension — Browser-level AI integration for web interaction and productivity.',
-  dilu: 'Dilu — Production-ready template launchpad for rapid software deployment.',
-  vecto: 'Vecto — AI-driven brand studio and visual identity design platform.',
-  woktool: 'WokTool — Professional browser-based utility suite for developer productivity.',
-  wokid: 'WokID — Unified identity, authentication, and security layer for WokSpec.',
-  wokpay: 'WokPay — Integrated payment processing, billing, and subscription management.',
-  wokcloud: 'WokCloud — High-performance cloud infrastructure and hosting services.',
-  wokbase: 'WokBase — Managed database and real-time storage solutions for WokSpec apps.',
-  wokflow: 'WokFlow — Automation and workflow orchestration engine for builders.',
-  wokplay: 'WokPlay — Community gaming, interactive experiences, and social entertainment.',
-  wokspec: 'WokSpec — The core ecosystem providing tools and services for the next generation of builders.',
+  woksite: 'WokSpec Site — Marketing and dashboard hub.',
+  studio: 'Studio — Private design suite for pixel, vector, brand, UI/UX, voice, and tools.',
+  wokhei: 'WokHei — Open-source news product and editorial feed.',
+  api: 'WokAPI — Auth, sessions, billing, and routing.',
+  autiladus: 'Autiladus — Automation harness built on OpenCode workflows.',
+  extension: 'WokSpec Extension — Browser-level integration for internal workflows.',
+  wokspec: 'WokSpec — The core ecosystem providing tools and services for builders.',
 };
 
 function isKnownProduct(product?: string | null): product is KnownProduct {
@@ -107,7 +91,7 @@ function describeIntegration(integration: IntegrationContext): string[] {
 }
 
 /**
- * Build an enriched context string that gives Eral knowledge about the
+ * Build an enriched context string that gives Nikita knowledge about the
  * current user and any page/product context provided by the client.
  */
 export function buildContext(options: {
@@ -149,44 +133,23 @@ export function productPromptExtras(
   const extras: string[] = [];
 
   switch (isKnownProduct(product) ? product : undefined) {
-    case 'wokgen':
+    case 'woksite':
+      extras.push('You are helping on the WokSpec marketing site and client dashboard. Keep answers concise and point users to actions they can take on the site.');
+      break;
+    case 'studio':
       extras.push('When discussing asset generation, you can suggest pixel art styles, color palettes, and ComfyUI workflow tips.');
       break;
-    case 'wokpost':
-      extras.push('When helping with posts, optimize for developer and builder audiences. Suggest relevant hashtags and formatting.');
+    case 'wokhei':
+      extras.push('Focus on news, analysis, and editorial judgment. Provide concise summaries, highlights, and signals on credibility.');
       break;
-    case 'chopsticks':
-      extras.push('You have knowledge of Discord bot commands, economy systems, and community management within WokSpec.');
+    case 'api':
+      extras.push('You are assisting with WokAPI. Explain auth/session flows, rate limits, and security expectations clearly and succinctly.');
+      break;
+    case 'autiladus':
+      extras.push('Autiladus runs OpenCode-based automation. Offer step-by-step guidance, safety checks, and validation of targets before acting.');
       break;
     case 'extension':
       extras.push('You are running in the WokSpec browser extension. Help users understand and interact with the current web page.');
-      break;
-    case 'dilu':
-      extras.push('Help users choose templates, understand launch workflows, and connect Dilu to the wider WokSpec stack.');
-      break;
-    case 'vecto':
-      extras.push('When helping in Vecto, focus on brand systems, visual direction, asset generation workflows, and creative execution.');
-      break;
-    case 'woktool':
-      extras.push('When helping in WokTool, guide users to the right browser-based utilities and keep answers practical and fast.');
-      break;
-    case 'wokid':
-      extras.push('Provide guidance on identity management, SSO integration, and security best practices within the WokSpec ecosystem.');
-      break;
-    case 'wokpay':
-      extras.push('Assist with billing, subscription management, and payment processing queries using WokPay.');
-      break;
-    case 'wokcloud':
-      extras.push('Guide users through cloud infrastructure setup, deployment strategies, and performance optimization.');
-      break;
-    case 'wokbase':
-      extras.push('Provide expertise on data modeling, storage optimization, and real-time database management.');
-      break;
-    case 'wokflow':
-      extras.push('Help users build and optimize automated workflows and process orchestrations.');
-      break;
-    case 'wokplay':
-      extras.push('Engage users with community gaming features and social interaction tools.');
       break;
     case 'wokspec':
       extras.push('Provide general assistance across the entire WokSpec ecosystem, serving as a primary point of contact for help and support.');

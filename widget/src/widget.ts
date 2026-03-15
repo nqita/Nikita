@@ -1,28 +1,28 @@
 // ============================================================
-// Eral Widget — embeddable AI chat for any website
+// Nikita Widget — embeddable AI chat for any website
 //
 // Usage:
-//   <script src="https://eral.wokspec.org/widget.js"
-//           data-eral-key="eral_your_api_key"
-//           data-eral-name="Eral"
-//           data-eral-color="#7c3aed"
-//           data-eral-position="bottom-right"
-//           data-eral-greeting="Hi! How can I help?"
-//           data-eral-product="support-portal"
-//           data-eral-quality="best"
-//           data-eral-page-context="true"
+//   <script src="https://nikita.wokspec.org/widget.js"
+//           data-nikita-key="eral_your_api_key"
+//           data-nikita-name="Nikita"
+//           data-nikita-color="#7c3aed"
+//           data-nikita-position="bottom-right"
+//           data-nikita-greeting="Hi! How can I help?"
+//           data-nikita-product="support-portal"
+//           data-nikita-quality="best"
+//           data-nikita-page-context="true"
 //   ></script>
 //
 // Or imperatively:
-//   window.EralWidget.init({ apiKey: 'eral_...', name: 'Eral' })
+//   window.EralWidget.init({ apiKey: 'eral_...', name: 'Nikita' })
 //   window.EralWidget.open()
 //   window.EralWidget.close()
 //   window.EralWidget.destroy()
 //
-// `window.Eral` remains as a compatibility alias.
+// `window.Nikita` remains as a compatibility alias.
 // ============================================================
 
-const ERAL_API = 'https://eral.wokspec.org/api';
+const ERAL_API = 'https://nikita.wokspec.org/api';
 const ROOT_ID = '__eral_host__';
 
 type Position = 'bottom-right' | 'bottom-left';
@@ -110,16 +110,16 @@ function buildStyles(): string {
       box-sizing: border-box;
     }
 
-    .eral-shell {
+    .nikita-shell {
       position: relative;
       font-family: inherit;
     }
 
-    .eral-btn {
+    .nikita-btn {
       width: 56px;
       height: 56px;
       border-radius: 18px;
-      background: var(--eral-accent);
+      background: var(--nikita-accent);
       border: none;
       cursor: pointer;
       display: flex;
@@ -129,18 +129,18 @@ function buildStyles(): string {
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .eral-btn:hover {
+    .nikita-btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 12px 40px rgba(124, 58, 237, 0.45);
     }
 
-    .eral-btn svg {
+    .nikita-btn svg {
       width: 24px;
       height: 24px;
       stroke: #fff;
     }
 
-    .eral-panel {
+    .nikita-panel {
       width: 380px;
       height: min(600px, 80vh);
       margin-bottom: 16px;
@@ -154,13 +154,13 @@ function buildStyles(): string {
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .eral-hidden {
+    .nikita-hidden {
       opacity: 0;
       pointer-events: none;
       transform: translateY(20px) scale(0.95);
     }
 
-    .eral-header {
+    .nikita-header {
       padding: 16px 20px;
       background: #141414;
       border-bottom: 1px solid #222;
@@ -169,17 +169,17 @@ function buildStyles(): string {
       justify-content: space-between;
     }
 
-    .eral-header-title {
+    .nikita-header-title {
       display: flex;
       align-items: center;
       gap: 12px;
     }
 
-    .eral-avatar {
+    .nikita-avatar {
       width: 32px;
       height: 32px;
       border-radius: 10px;
-      background: var(--eral-accent);
+      background: var(--nikita-accent);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -189,14 +189,14 @@ function buildStyles(): string {
       letter-spacing: 0.05em;
     }
 
-    .eral-name {
+    .nikita-name {
       font-weight: 600;
       font-size: 15px;
       color: #fff;
       letter-spacing: -0.01em;
     }
 
-    .eral-badge {
+    .nikita-badge {
       font-size: 10px;
       color: #888;
       text-transform: uppercase;
@@ -205,7 +205,7 @@ function buildStyles(): string {
       font-weight: 500;
     }
 
-    .eral-close {
+    .nikita-close {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
       cursor: pointer;
@@ -219,12 +219,12 @@ function buildStyles(): string {
       transition: all 0.15s ease;
     }
 
-    .eral-close:hover {
+    .nikita-close:hover {
       background: rgba(255, 255, 255, 0.1);
       color: #fff;
     }
 
-    .eral-messages {
+    .nikita-messages {
       flex: 1;
       overflow-y: auto;
       padding: 20px;
@@ -234,21 +234,21 @@ function buildStyles(): string {
       background: radial-gradient(circle at top right, rgba(124, 58, 237, 0.03), transparent 40%);
     }
 
-    .eral-msg {
+    .nikita-msg {
       display: flex;
       gap: 10px;
       max-width: 100%;
     }
 
-    .eral-user {
+    .nikita-user {
       justify-content: flex-end;
     }
 
-    .eral-assistant {
+    .nikita-assistant {
       justify-content: flex-start;
     }
 
-    .eral-bubble {
+    .nikita-bubble {
       padding: 12px 16px;
       border-radius: 16px;
       font-size: 14px;
@@ -257,41 +257,41 @@ function buildStyles(): string {
       word-break: break-word;
     }
 
-    .eral-user .eral-bubble {
-      background: var(--eral-accent);
+    .nikita-user .nikita-bubble {
+      background: var(--nikita-accent);
       color: #fff;
       border-bottom-right-radius: 4px;
       box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
     }
 
-    .eral-assistant .eral-bubble {
+    .nikita-assistant .nikita-bubble {
       background: #1a1a1a;
       color: #f0f0f0;
       border-bottom-left-radius: 4px;
       border: 1px solid #2a2a2a;
     }
 
-    .eral-typing {
+    .nikita-typing {
       display: flex;
       align-items: center;
       gap: 4px;
       padding: 12px 18px !important;
     }
 
-    .eral-typing span {
+    .nikita-typing span {
       width: 5px;
       height: 5px;
       background: #555;
       border-radius: 50%;
-      animation: eral-pulse 1.5s infinite;
+      animation: nikita-pulse 1.5s infinite;
     }
 
-    @keyframes eral-pulse {
+    @keyframes nikita-pulse {
       0%, 100% { opacity: 0.3; transform: scale(0.8); }
       50% { opacity: 1; transform: scale(1.1); }
     }
 
-    .eral-input-row {
+    .nikita-input-row {
       padding: 16px 20px 20px;
       border-top: 1px solid #222;
       background: #111;
@@ -300,7 +300,7 @@ function buildStyles(): string {
       gap: 10px;
     }
 
-    .eral-input-container {
+    .nikita-input-container {
       position: relative;
       display: flex;
       align-items: flex-end;
@@ -311,11 +311,11 @@ function buildStyles(): string {
       transition: border-color 0.2s ease;
     }
 
-    .eral-input-container:focus-within {
+    .nikita-input-container:focus-within {
       border-color: rgba(124, 58, 237, 0.5);
     }
 
-    .eral-textarea {
+    .nikita-textarea {
       flex: 1;
       background: transparent;
       border: none;
@@ -330,12 +330,12 @@ function buildStyles(): string {
       font-family: inherit;
     }
 
-    .eral-send {
+    .nikita-send {
       width: 34px;
       height: 34px;
       margin: 4px;
       border-radius: 10px;
-      background: var(--eral-accent);
+      background: var(--nikita-accent);
       border: none;
       cursor: pointer;
       display: flex;
@@ -344,18 +344,18 @@ function buildStyles(): string {
       transition: all 0.2s ease;
     }
 
-    .eral-send:hover:not(:disabled) {
+    .nikita-send:hover:not(:disabled) {
       background: #8b5cf6;
       transform: scale(1.05);
     }
 
-    .eral-send:disabled {
+    .nikita-send:disabled {
       background: #333;
       opacity: 0.5;
       cursor: not-allowed;
     }
 
-    .eral-send svg {
+    .nikita-send svg {
       width: 16px;
       height: 16px;
       fill: none;
@@ -363,7 +363,7 @@ function buildStyles(): string {
       stroke-width: 2.5;
     }
 
-    .eral-powered {
+    .nikita-powered {
       text-align: center;
       padding-bottom: 12px;
       font-size: 9px;
@@ -373,18 +373,18 @@ function buildStyles(): string {
       font-weight: 600;
     }
 
-    .eral-powered a {
+    .nikita-powered a {
       color: inherit;
       text-decoration: none;
       transition: color 0.15s ease;
     }
 
-    .eral-powered a:hover {
+    .nikita-powered a:hover {
       color: #666;
     }
 
     @media (max-width: 480px) {
-      .eral-panel {
+      .nikita-panel {
         width: calc(100vw - 32px);
         height: min(560px, calc(100vh - 120px));
         margin-right: 0;
@@ -435,11 +435,11 @@ class EralWidgetInstance {
   constructor(config: EralConfig) {
     this.config = {
       apiKey: config.apiKey,
-      name: normalizeText(config.name) ?? 'Eral Intelligence',
+      name: normalizeText(config.name) ?? 'Nikita Intelligence',
       color: normalizeText(config.color) ?? '#7c3aed',
       position: config.position ?? 'bottom-right',
       quality: config.quality ?? 'balanced',
-      greeting: normalizeText(config.greeting) ?? "Hey — I'm Eral. Ask me anything about WokSpec, the work, or what we can build together.",
+      greeting: normalizeText(config.greeting) ?? "Hey — I'm Nikita. Ask me anything about WokSpec, the work, or what we can build together.",
       placeholder: normalizeText(config.placeholder) ?? 'Type your message...',
       apiUrl: normalizeText(config.apiUrl) ?? ERAL_API,
       product: normalizeText(config.product),
@@ -456,7 +456,7 @@ class EralWidgetInstance {
     this.host.id = ROOT_ID;
     this.host.style.position = 'fixed';
     this.host.style.zIndex = '2147483647';
-    this.host.style.setProperty('--eral-accent', this.config.color);
+    this.host.style.setProperty('--nikita-accent', this.config.color);
     this.applyPosition();
 
     this.shadow = this.host.attachShadow({ mode: 'open' });
@@ -476,42 +476,42 @@ class EralWidgetInstance {
   }
 
   private buildDOM(): HTMLDivElement {
-    const shell = createElement('div', 'eral-shell');
+    const shell = createElement('div', 'nikita-shell');
 
-    this.panel = createElement('div', 'eral-panel eral-hidden');
+    this.panel = createElement('div', 'nikita-panel nikita-hidden');
 
-    const header = createElement('div', 'eral-header');
-    const headerTitle = createElement('div', 'eral-header-title');
+    const header = createElement('div', 'nikita-header');
+    const headerTitle = createElement('div', 'nikita-header-title');
 
-    const avatar = createElement('div', 'eral-avatar');
+    const avatar = createElement('div', 'nikita-avatar');
     avatar.textContent = 'ER';
 
-    const nameWrap = createElement('div', 'eral-name-wrap');
-    const name = createElement('div', 'eral-name');
+    const nameWrap = createElement('div', 'nikita-name-wrap');
+    const name = createElement('div', 'nikita-name');
     name.textContent = this.config.name;
-    const badge = createElement('div', 'eral-badge');
+    const badge = createElement('div', 'nikita-badge');
     badge.textContent = 'WokSpec Ecosystem';
 
     nameWrap.append(name, badge);
     headerTitle.append(avatar, nameWrap);
 
-    const closeButton = createElement('button', 'eral-close');
+    const closeButton = createElement('button', 'nikita-close');
     closeButton.type = 'button';
     closeButton.setAttribute('aria-label', 'Close');
     closeButton.textContent = '✕';
 
     header.append(headerTitle, closeButton);
 
-    this.messagesEl = createElement('div', 'eral-messages');
+    this.messagesEl = createElement('div', 'nikita-messages');
 
-    const inputRow = createElement('div', 'eral-input-row');
-    const inputContainer = createElement('div', 'eral-input-container');
+    const inputRow = createElement('div', 'nikita-input-row');
+    const inputContainer = createElement('div', 'nikita-input-container');
     
-    this.textarea = createElement('textarea', 'eral-textarea');
+    this.textarea = createElement('textarea', 'nikita-textarea');
     this.textarea.rows = 1;
     this.textarea.placeholder = this.config.placeholder;
 
-    this.sendBtn = createElement('button', 'eral-send');
+    this.sendBtn = createElement('button', 'nikita-send');
     this.sendBtn.type = 'button';
     this.sendBtn.setAttribute('aria-label', 'Send');
     this.sendBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -519,14 +519,14 @@ class EralWidgetInstance {
     inputContainer.append(this.textarea, this.sendBtn);
     inputRow.append(inputContainer);
 
-    const powered = createElement('div', 'eral-powered');
+    const powered = createElement('div', 'nikita-powered');
     powered.innerHTML = '<a href="https://wokspec.org" target="_blank" rel="noopener noreferrer">Powered by WokSpec</a>';
 
     this.panel.append(header, this.messagesEl, inputRow, powered);
 
-    const toggleButton = createElement('button', 'eral-btn');
+    const toggleButton = createElement('button', 'nikita-btn');
     toggleButton.type = 'button';
-    toggleButton.setAttribute('aria-label', 'Open Eral AI');
+    toggleButton.setAttribute('aria-label', 'Open Nikita AI');
     toggleButton.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path><path d="M12 8v4"/><path d="M12 12h.01"/></svg>';
 
     shell.append(this.panel, toggleButton);
@@ -579,10 +579,10 @@ class EralWidgetInstance {
 
   private pushMessage(message: Message): void {
     this.messages.push(message);
-    const item = createElement('div', `eral-msg eral-${message.role}`);
+    const item = createElement('div', `nikita-msg nikita-${message.role}`);
     item.dataset.id = message.id;
 
-    const bubble = createElement('div', 'eral-bubble');
+    const bubble = createElement('div', 'nikita-bubble');
     bubble.textContent = message.content;
     item.appendChild(bubble);
 
@@ -591,11 +591,11 @@ class EralWidgetInstance {
   }
 
   private showTyping(): HTMLDivElement {
-    const item = createElement('div', 'eral-msg eral-assistant');
+    const item = createElement('div', 'nikita-msg nikita-assistant');
     item.id = '__eral_typing__';
 
-    const bubble = createElement('div', 'eral-bubble');
-    bubble.classList.add('eral-typing');
+    const bubble = createElement('div', 'nikita-bubble');
+    bubble.classList.add('nikita-typing');
     for (let index = 0; index < 3; index += 1) {
       bubble.appendChild(createElement('span'));
     }
@@ -635,7 +635,7 @@ class EralWidgetInstance {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${this.config.apiKey}`,
-          'X-Eral-Source': 'widget',
+          'X-Nikita-Source': 'widget',
         },
         body: JSON.stringify(this.buildRequestBody(text)),
       });
@@ -674,13 +674,13 @@ class EralWidgetInstance {
 
   openPanel(): void {
     this.open = true;
-    this.panel.classList.remove('eral-hidden');
+    this.panel.classList.remove('nikita-hidden');
     this.textarea.focus();
   }
 
   close(): void {
     this.open = false;
-    this.panel.classList.add('eral-hidden');
+    this.panel.classList.add('nikita-hidden');
   }
 
   destroy(): void {
@@ -710,7 +710,7 @@ const EralWidget = {
 
 function autoInit(): void {
   const script = document.currentScript as HTMLScriptElement | null
-    ?? document.querySelector<HTMLScriptElement>('script[data-eral-key]');
+    ?? document.querySelector<HTMLScriptElement>('script[data-nikita-key]');
 
   if (!script) return;
 
@@ -762,11 +762,11 @@ if (document.readyState === 'loading') {
 declare global {
   interface Window {
     EralWidget: typeof EralWidget;
-    Eral: typeof EralWidget;
+    Nikita: typeof EralWidget;
   }
 }
 
 window.EralWidget = EralWidget;
-window.Eral = EralWidget;
+window.Nikita = EralWidget;
 
 export {};

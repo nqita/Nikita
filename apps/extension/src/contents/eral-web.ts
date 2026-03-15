@@ -15,7 +15,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       const selection = window.getSelection()?.toString() || message.text
       if (selection) {
         sendClip({ type: "text", content: selection, sourceUrl: window.location.href })
-        showToast("Saved to Eral!")
+        showToast("Saved to Nikita!")
       }
       sendResponse({ success: true })
       break
@@ -57,7 +57,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 async function sendClip(clip: { type: string; content: string; sourceUrl: string; title?: string }) {
   const { accessToken } = await chrome.storage.session.get(["accessToken"])
   if (!accessToken) {
-    showToast("Sign in to Eral first", "error")
+    showToast("Sign in to Nikita first", "error")
     return
   }
   try {
@@ -74,11 +74,11 @@ async function sendClip(clip: { type: string; content: string; sourceUrl: string
 // ── Toast ────────────────────────────────────────────────────────────────────
 
 function showToast(message: string, type: "success" | "error" = "success") {
-  const existing = document.getElementById("eral-toast")
+  const existing = document.getElementById("nikita-toast")
   if (existing) existing.remove()
 
   const toast = document.createElement("div")
-  toast.id = "eral-toast"
+  toast.id = "nikita-toast"
   toast.style.cssText = `
     position: fixed;
     bottom: 76px;
@@ -135,7 +135,7 @@ chrome.storage.sync.onChanged.addListener((changes) => {
         observer.observe(document.body, { childList: true, subtree: true })
       } else {
         observer.disconnect()
-        document.querySelectorAll(".eral-save-btn").forEach((el) => el.remove())
+        document.querySelectorAll(".nikita-save-btn").forEach((el) => el.remove())
       }
     }
   }
@@ -148,11 +148,11 @@ function injectSaveButtons() {
   if (!pattern) return
 
   document.querySelectorAll(pattern.selector).forEach((post) => {
-    if (post.querySelector(".eral-save-btn")) return
+    if (post.querySelector(".nikita-save-btn")) return
 
     const btn = document.createElement("button")
-    btn.className = "eral-save-btn"
-    btn.setAttribute("aria-label", "Save to Eral")
+    btn.className = "nikita-save-btn"
+    btn.setAttribute("aria-label", "Save to Nikita")
     btn.style.cssText = `
       position: absolute; top: 8px; right: 8px; z-index: 100;
       padding: 4px 10px; border-radius: 6px;

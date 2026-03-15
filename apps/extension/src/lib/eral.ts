@@ -1,9 +1,9 @@
 /**
- * Eral API client — safe for use in content scripts and background service worker.
- * Reads the Eral/WokSpec accessToken from chrome.storage.session.
+ * Nikita API client — safe for use in content scripts and background service worker.
+ * Reads the Nikita/WokSpec accessToken from chrome.storage.session.
  */
 
-export const ERAL_API = process.env.PLASMO_PUBLIC_ERAL_API_URL ?? "https://eral.wokspec.org/api"
+export const ERAL_API = process.env.PLASMO_PUBLIC_ERAL_API_URL ?? "https://nikita.wokspec.org/api"
 
 type IntegrationMetadataValue = string | number | boolean
 type AIQuality = "fast" | "balanced" | "best"
@@ -52,7 +52,7 @@ function buildExtensionIntegration(
   capabilities: string[]
 ): ExtensionIntegrationContext {
   return {
-    name: "Eral Web Extension",
+    name: "Nikita Web Extension",
     kind: "browser-extension",
     url: normalizeText(options.pageUrl),
     origin: deriveOrigin(options.pageUrl),
@@ -101,7 +101,7 @@ export async function eralChat(
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        "X-Eral-Source": "eral-extension",
+        "X-Nikita-Source": "nikita-extension",
       },
       body: JSON.stringify({
         message,
@@ -143,7 +143,7 @@ export async function eralAnalyze(
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        "X-Eral-Source": "eral-extension",
+        "X-Nikita-Source": "nikita-extension",
       },
       body: JSON.stringify({
         type,
@@ -185,7 +185,7 @@ export async function eralGenerate(
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        "X-Eral-Source": "eral-extension",
+        "X-Nikita-Source": "nikita-extension",
       },
       body: JSON.stringify({
         type,

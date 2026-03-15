@@ -9,7 +9,7 @@ WokWeb is the open-source WokSpec browser extension. Clip pages, download media,
 - **📋 Page Clipping** — Select text, images, or links and save them to WokSpec
 - **⬇️ Media Downloader** — Download YouTube videos as MP4/MP3/WAV
 - **💬 Social Saver** — Auto save-buttons on Twitter/X, Instagram, Reddit
-- **✦ AI Overlay** — Ask Eral (WokSpec AI) about any page
+- **✦ AI Overlay** — Ask Nikita (WokSpec AI) about any page
 - **🗂 Side Panel** — Quick launcher, clip history, and WokSpec tools
 - **🖱 Context Menu** — Right-click to clip, save, or download anything
 

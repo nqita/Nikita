@@ -1,24 +1,24 @@
-# CLAUDE.md — Eral Agent Guide
+# CLAUDE.md — Nikita Agent Guide
 
 > This file is the authoritative reference for AI coding agents (Claude, Copilot, etc.) working in
-> the Eral repository. Read it before writing any code.
+> the Nikita repository. Read it before writing any code.
 
 ---
 
-## What Is Eral?
+## What Is Nikita?
 
-Eral is the **AI backbone for the WokSpec ecosystem**. It runs as a **Cloudflare Worker** (edge
+Nikita is the **AI backbone for the WokSpec ecosystem**. It runs as a **Cloudflare Worker** (edge
 runtime, zero cold-starts) built with **Hono** and exposes a REST API used by every WokSpec
 product.
 
-**What Eral powers:**
+**What Nikita powers:**
 
 - **Chat with persistent session memory** — conversation history stored in Cloudflare KV, 7-day
   TTL, up to 40 messages per session.
-- **Brand context injection** — Eral knows the user's product context and injects relevant prompts.
+- **Brand context injection** — Nikita knows the user's product context and injects relevant prompts.
 - **Site-wide AI companion** — embedded via `widget.js` on any WokSpec product page.
-- **News analysis** — backs WokPost article summarization and sentiment analysis.
-- **Content generation** — powers WokGen's prompt-driven generation features.
+- **News analysis** — backs WokHei article summarization and sentiment analysis.
+- **Content generation** — powers Studio's prompt-driven generation features.
 - **Browser extension** — provides an AI overlay, composition assist, and video analysis in
   Chrome, Firefox, and Edge via the Plasmo-based extension in `apps/extension/`.
 
@@ -26,7 +26,7 @@ product.
 
 ## High-Fidelity UI Standards (Anti-Vibe-Coded)
 
-The Eral Web App, Extension UI, and Widget must follow the WokSpec High-Fidelity UI Standards defined in [../UI_STANDARDS.md](../UI_STANDARDS.md).
+The Nikita Web App, Extension UI, and Widget must follow the WokSpec High-Fidelity UI Standards defined in [../UI_STANDARDS.md](../UI_STANDARDS.md).
 
 - **8pt Spacing:** Use strict 4/8pt increments for all layout gaps and paddings in the chat UI and extension overlays.
 - **Loading States:** Every AI interaction must show a distinct loading state (e.g., typing indicator, skeleton screen for analysis).
@@ -38,17 +38,17 @@ The Eral Web App, Extension UI, and Widget must follow the WokSpec High-Fidelity
 ### Monorepo Structure
 
 ```
-Eral/
+Nikita/
 ├── src/                          # Root: Hono Cloudflare Worker API
 │   ├── index.ts                  # Main Hono app, route mounting, CORS
-│   ├── types.ts                  # All shared TypeScript types (Env, EralUser, etc.)
+│   ├── types.ts                  # All shared TypeScript types (Env, NikitaUser, etc.)
 │   ├── middleware/
 │   │   └── index.ts              # securityHeaders, requestId, rateLimit, requireAuth, optionalAuth
 │   ├── routes/
 │   │   ├── chat.ts               # POST /v1/chat — chat with persistent memory
 │   │   ├── generate.ts           # POST /v1/generate — content generation
 │   │   ├── analyze.ts            # POST /v1/analyze — analysis (summarize, sentiment, etc.)
-│   │   ├── wokgen.ts             # POST /v1/wokgen/prompt — WokGen-specific generation
+│   │   ├── studio.ts             # POST /v1/studio/prompt — Studio-specific generation
 │   │   ├── status.ts             # GET /v1/status — service status
 │   │   └── keys.ts               # GET|POST|DELETE /v1/keys — API key management
 │   └── lib/
@@ -56,7 +56,7 @@ Eral/
 │       ├── memory.ts             # KV-backed session memory (getMemory, appendMemory, clearMemory)
 │       ├── context.ts            # buildContext(), productPromptExtras() — brand/context injection
 │       ├── jwt.ts                # WokSpec JWT verification (jose)
-│       ├── api-keys.ts           # Eral API key create/verify (eral_ prefix)
+│       ├── api-keys.ts           # Nikita API key create/verify (eral_ prefix)
 │       └── rate-limit.ts         # Cloudflare KV-based rate limiting
 ├── apps/
 │   ├── extension/                # Plasmo browser extension (Chrome/Firefox/Edge)
@@ -73,8 +73,8 @@ Eral/
 │           ├── app/              # Next.js App Router pages
 │           └── components/       # Chat UI components
 ├── dist/
-│   └── eral-widget.js            # Pre-built embeddable widget bundle (IIFE)
-├── widget/                       # Widget source (builds to dist/eral-widget.js)
+│   └── nikita-widget.js            # Pre-built embeddable widget bundle (IIFE)
+├── widget/                       # Widget source (builds to dist/nikita-widget.js)
 ├── wrangler.toml                 # Cloudflare Worker configuration
 ├── package.json                  # Root (API) package.json
 └── tsconfig.json                 # Root TypeScript config
@@ -89,8 +89,8 @@ Eral/
 | **Never log user message content** | User messages are private. They must not appear in Worker logs, Sentry breadcrumbs, or any observability output. Log request metadata (session ID, user ID, product) only. |
 | **All API routes require auth** | Use `requireAuth()` middleware. The only exceptions are `/health`, `/api/health`, `/`, and `/widget.js`. Never add an unauthenticated route that touches user data. |
 | **Never expose JWT_SECRET** | It is a Cloudflare Worker secret. Never log it, echo it in responses, or commit it to source. |
-| **Never break the `/v1/chat` contract** | WokSpec products, the browser extension, and external sites built on Eral API keys depend on the request/response shape. |
-| **Widget must work in any page context** | `dist/eral-widget.js` runs as an IIFE on third-party pages. It must not pollute the global scope, must not conflict with host page CSS, and must not trigger CSP violations on well-configured sites. |
+| **Never break the `/v1/chat` contract** | WokSpec products, the browser extension, and external sites built on Nikita API keys depend on the request/response shape. |
+| **Widget must work in any page context** | `dist/nikita-widget.js` runs as an IIFE on third-party pages. It must not pollute the global scope, must not conflict with host page CSS, and must not trigger CSP violations on well-configured sites. |
 | **Session memory is user-scoped** | The KV key format is `mem:{userId}:{sessionId}`. Never allow one user to read another user's memory by accepting user IDs from request bodies. |
 | **Content scripts must not pollute the DOM** | Plasmo content scripts run in isolated worlds but CSS can still leak. Use Shadow DOM for all UI injections. |
 
@@ -114,10 +114,10 @@ The root Hono app:
    import { Hono } from 'hono';
    import { zValidator } from '@hono/zod-validator';
    import { z } from 'zod';
-   import type { Env, EralUser } from '../types';
+   import type { Env, NikitaUser } from '../types';
    import { requireAuth, rateLimit } from '../middleware';
 
-   const myRouter = new Hono<{ Bindings: Env; Variables: { user: EralUser } }>();
+   const myRouter = new Hono<{ Bindings: Env; Variables: { user: NikitaUser } }>();
    myRouter.use('*', requireAuth());
 
    myRouter.post(
@@ -146,7 +146,7 @@ The root Hono app:
 
 ### Response Shape
 
-All Eral responses follow a consistent envelope:
+All Nikita responses follow a consistent envelope:
 
 ```ts
 // Success
@@ -164,12 +164,12 @@ Always use this shape. Never return a bare object or a different error format.
 
 ### Two Auth Methods
 
-Eral supports two authentication methods, both via the `Authorization: Bearer <token>` header:
+Nikita supports two authentication methods, both via the `Authorization: Bearer <token>` header:
 
 | Method | Token shape | Source |
 |--------|-------------|--------|
 | **WokSpec JWT** | Standard JWT | Issued by WokSpec auth (shared `JWT_SECRET`) |
-| **Eral API key** | `eral_<random>` | Created via `POST /v1/keys`, stored in `KV_API_KEYS` |
+| **Nikita API key** | `eral_<random>` | Created via `POST /v1/keys`, stored in `KV_API_KEYS` |
 
 ### Using Auth in Routes
 
@@ -182,12 +182,12 @@ router.use('*', requireAuth());
 router.use('*', requireAuth('chat'));
 
 // Get the resolved user:
-const user = c.get('user');   // EralUser — always non-null after requireAuth
-const auth = c.get('auth');   // EralAuth — includes method and apiKey record
+const user = c.get('user');   // NikitaUser — always non-null after requireAuth
+const auth = c.get('auth');   // NikitaAuth — includes method and apiKey record
 
 // Optional auth — user may be null
 router.use('*', optionalAuth());
-const user = c.get('user'); // EralUser | null
+const user = c.get('user'); // NikitaUser | null
 ```
 
 ### API Key Scopes
@@ -197,7 +197,7 @@ const user = c.get('user'); // EralUser | null
 | `chat` | `/v1/chat` |
 | `generate` | `/v1/generate` |
 | `analyze` | `/v1/analyze` |
-| `wokgen` | `/v1/wokgen/*` |
+| `studio` | `/v1/studio/*` |
 | `*` | All endpoints |
 
 ### JWT Verification
@@ -257,17 +257,17 @@ import { buildContext, productPromptExtras } from '../lib/context';
 
 const userContext = buildContext({ user, product, pageContext });
 const productExtras = productPromptExtras(product);
-// product: 'woksite' | 'wokgen' | 'wokpost' | 'chopsticks' | 'extension' | undefined
+// product: 'woksite' | 'studio' | 'wokhei' | 'api' | 'autiladus' | 'extension' | undefined
 ```
 
 ### Product Integrations
 
-| Product | What Eral does |
+| Product | What Nikita does |
 |---------|---------------|
 | `woksite` | General site-wide AI companion |
-| `wokgen` | Content generation with WokGen brand templates |
-| `wokpost` | News article analysis, summarization, sentiment |
-| `chopsticks` | Discord bot AI commands (assistant, imagine, etc.) |
+| `studio` | Content generation with Studio brand templates |
+| `wokhei` | News analysis, summarization, editorial signals |
+| `api` | Auth, sessions, billing, routing |
 | `extension` | Browser AI overlay, compose assist, video analysis |
 
 When adding a new WokSpec product integration:
@@ -337,7 +337,7 @@ router.post('/', rateLimit('chat'), ...);
 | `chat` | Chat endpoint (tighter — LLM calls are expensive) |
 | `generate` | Content generation |
 | `analyze` | Analysis |
-| `wokgen` | WokGen generation |
+| `studio` | Studio generation |
 | `keys` | API key management |
 
 When adding a new route, always apply `rateLimit()`. Choose the tightest appropriate type.
@@ -390,7 +390,7 @@ For local development, use `.dev.vars` (gitignored, equivalent to `.env` for `wr
 | `KV_SESSIONS` | Session metadata |
 | `KV_RATE_LIMITS` | Rate limit buckets |
 | `KV_MEMORY` | Conversation history |
-| `KV_API_KEYS` | Eral API keys (external site access) |
+| `KV_API_KEYS` | Nikita API keys (external site access) |
 
 **To set a secret in production:**
 
@@ -415,15 +415,15 @@ Edge MV3, and Opera MV3 from a single source tree.
 apps/extension/src/
 ├── background/index.ts       # Service worker — handles auth, API requests, message routing
 ├── contents/                 # Content scripts (injected into web pages)
-│   ├── eral-web.ts           # Web page detector / initializer (matches: all_urls)
+│   ├── nikita-web.ts           # Web page detector / initializer (matches: all_urls)
 │   ├── ai-overlay.tsx        # AI chat overlay UI
-│   ├── eral-compose.tsx      # AI compose assist (email, docs, forms)
-│   ├── eral-compose.css      # Compose UI styles
-│   ├── eral-selection.tsx    # Selection-based AI (explain, rewrite)
-│   └── eral-video.tsx        # Video transcript/summary overlay
+│   ├── nikita-compose.tsx      # AI compose assist (email, docs, forms)
+│   ├── nikita-compose.css      # Compose UI styles
+│   ├── nikita-selection.tsx    # Selection-based AI (explain, rewrite)
+│   └── nikita-video.tsx        # Video transcript/summary overlay
 ├── lib/
 │   ├── api.ts                # API client (routes through background service worker)
-│   ├── eral.ts               # Eral-specific types and helpers
+│   ├── nikita.ts               # Nikita-specific types and helpers
 │   ├── storage.ts            # Extension storage (Plasmo storage API)
 │   └── errors.ts             # Error types
 ├── popup/index.tsx           # Browser toolbar popup
@@ -460,7 +460,7 @@ const response = await sendToBackground({ name: "chat", body: { message } });
 // In background/index.ts:
 import { onMessage } from "@plasmohq/messaging";
 onMessage("chat", async (req) => {
-  // ... call Eral API ...
+  // ... call Nikita API ...
   return { response: "..." };
 });
 ```
@@ -470,7 +470,7 @@ onMessage("chat", async (req) => {
 Extension env vars are prefixed with `PLASMO_PUBLIC_` (exposed to content scripts):
 
 ```
-PLASMO_PUBLIC_API_URL=https://eral.wokspec.org
+PLASMO_PUBLIC_API_URL=https://nikita.wokspec.org
 PLASMO_PUBLIC_SITE_URL=https://wokspec.org
 ```
 
@@ -501,14 +501,14 @@ Build output goes to `apps/extension/build/<target>-<version>/`.
 
 ---
 
-## Embeddable Widget (`dist/eral-widget.js`)
+## Embeddable Widget (`dist/nikita-widget.js`)
 
 The widget is a pre-built IIFE that can be embedded on any page:
 
 ```html
-<script src="https://eral.wokspec.org/widget.js"></script>
+<script src="https://nikita.wokspec.org/widget.js"></script>
 <script>
-  EralWidget.init({
+  NikitaWidget.init({
     apiKey: 'eral_...',
     product: 'woksite',
     theme: 'dark',
@@ -516,11 +516,11 @@ The widget is a pre-built IIFE that can be embedded on any page:
 </script>
 ```
 
-The widget bundle is served directly by the Worker from `dist/eral-widget.js` (imported as a
+The widget bundle is served directly by the Worker from `dist/nikita-widget.js` (imported as a
 text blob via `wrangler.toml` `[[rules]]`).
 
 **Widget rules:**
-- Must not define globals other than `window.EralWidget`.
+- Must not define globals other than `window.NikitaWidget`.
 - Must use Shadow DOM for all UI.
 - Must not include large dependencies (keep bundle size minimal).
 - Must work on pages with strict CSP (no `eval`, no `new Function`).
@@ -535,7 +535,7 @@ The web app provides:
 - API key management at `/keys`
 - Documentation at `/docs`
 
-It is a **static export** (configured in `next.config.ts`). It talks to the Eral API at
+It is a **static export** (configured in `next.config.ts`). It talks to the Nikita API at
 `NEXT_PUBLIC_API_URL`.
 
 ---
@@ -548,10 +548,10 @@ It is a **static export** (configured in `next.config.ts`). It talks to the Eral
 
 ```ts
 // ✅ OK — log metadata
-console.log('[Eral/chat] user=%s session=%s product=%s', user.id, sessionId, product);
+console.log('[Nikita/chat] user=%s session=%s product=%s', user.id, sessionId, product);
 
 // ❌ NEVER — do not log message content
-console.log('[Eral/chat] message=%s', message);
+console.log('[Nikita/chat] message=%s', message);
 ```
 
 The only place user message content should exist is:
@@ -561,7 +561,7 @@ The only place user message content should exist is:
 
 ### Auth Security
 
-- `JWT_SECRET` must match between Eral and WokAPI exactly. If they don't match, all JWTs will
+- `JWT_SECRET` must match between Nikita and WokAPI exactly. If they don't match, all JWTs will
   fail verification.
 - API key hashes are stored in KV (not plaintext). The `verifyApiKey()` function handles
   comparison.
@@ -578,14 +578,14 @@ since auth is the security boundary). However:
 
 ---
 
-## Extending Eral's Integration with WokSpec Products
+## Extending Nikita's Integration with WokSpec Products
 
-When a new WokSpec product wants to use Eral:
+When a new WokSpec product wants to use Nikita:
 
 1. **Add the product's origin** to the `wokspecOrigins` allowlist in `src/index.ts`.
 2. **Add a product case** to `productPromptExtras()` in `src/lib/context.ts`.
 3. **Add the product value** to the `ProductSchema` zod enum in the route handlers.
-4. **Issue an Eral API key** with appropriate scopes for the product's backend (if server-to-server).
+4. **Issue an Nikita API key** with appropriate scopes for the product's backend (if server-to-server).
 5. **For browser-based access**, use the WokSpec JWT (user must be logged in).
 
 ---
@@ -684,24 +684,24 @@ npm run build             # Build + type check (via Plasmo)
 | File | Purpose |
 |------|---------|
 | `src/index.ts` | Hono app entry point, CORS, route mounting |
-| `src/types.ts` | All TypeScript types — Env, EralUser, ApiResponse, etc. |
+| `src/types.ts` | All TypeScript types — Env, NikitaUser, ApiResponse, etc. |
 | `src/middleware/index.ts` | securityHeaders, requestId, rateLimit, requireAuth, optionalAuth |
 | `src/routes/chat.ts` | Chat with persistent memory |
 | `src/routes/generate.ts` | Content generation |
 | `src/routes/analyze.ts` | Analysis (summarize, sentiment, explain, etc.) |
-| `src/routes/wokgen.ts` | WokGen-specific generation |
+| `src/routes/studio.ts` | Studio-specific generation |
 | `src/routes/status.ts` | Service status |
 | `src/routes/keys.ts` | API key CRUD |
 | `src/lib/openai.ts` | AI model runner (GPT-4o + CF AI fallback) |
 | `src/lib/memory.ts` | KV conversation memory |
 | `src/lib/context.ts` | Brand context and product prompt injection |
 | `src/lib/jwt.ts` | WokSpec JWT verification |
-| `src/lib/api-keys.ts` | Eral API key management |
+| `src/lib/api-keys.ts` | Nikita API key management |
 | `src/lib/rate-limit.ts` | KV-based rate limiting |
 | `wrangler.toml` | Cloudflare Worker config (bindings, routes, rules) |
 | `apps/extension/src/background/index.ts` | Extension service worker |
 | `apps/extension/src/lib/api.ts` | Extension API client |
-| `dist/eral-widget.js` | Pre-built embeddable widget |
+| `dist/nikita-widget.js` | Pre-built embeddable widget |
 
 ---
 

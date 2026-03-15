@@ -11,19 +11,19 @@ const inter = Inter({
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#0d0d0d',
+  themeColor: '#ff5aa5',
 };
 
 export const metadata: Metadata = {
-  title: 'Eral — WokSpec AI',
-  description: 'Your AI. Built into WokSpec. Chat, generate, and analyze with Eral.',
-  metadataBase: new URL('https://eral.wokspec.org'),
+  title: 'Nikita — WokSpec AI',
+  description: 'Private preview of Nikita. Join the waitlist.',
+  metadataBase: new URL('https://nikita.wokspec.org'),
   openGraph: {
     type: 'website',
-    siteName: 'Eral',
-    url: 'https://eral.wokspec.org',
-    title: 'Eral — WokSpec AI',
-    description: 'Your AI. Built into WokSpec.',
+    siteName: 'Nikita',
+    url: 'https://nikita.wokspec.org',
+    title: 'Nikita — WokSpec AI',
+    description: 'Private preview of Nikita.',
     images: [{ url: '/og.png' }],
   },
   twitter: { card: 'summary_large_image', site: '@wokspec' },
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" style={{ background: '#0d0d0d' }}>
+    <html lang="en" style={{ background: '#2b0b18' }}>
       <body className={inter.variable}>{children}</body>
     </html>
   );

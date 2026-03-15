@@ -27,7 +27,7 @@ export const requestId = (): MiddlewareHandler => {
 };
 
 export const rateLimit = (
-  type: 'default' | 'chat' | 'generate' | 'analyze' | 'wokgen' | 'keys' = 'default'
+  type: 'default' | 'chat' | 'generate' | 'analyze' | 'studio' | 'keys' = 'default'
 ): MiddlewareHandler<{ Bindings: Env }> => {
   return async (c, next) => {
     const ip = c.req.header('cf-connecting-ip') ?? c.req.header('x-forwarded-for') ?? 'unknown';
@@ -50,7 +50,7 @@ async function resolveAuth(c: Context<{ Bindings: Env; Variables: any }>): Promi
 
   if (!token) {
     // Check for anonymous session cookie for free trial
-    const anonId = c.req.header('X-Eral-Anon-Id');
+    const anonId = c.req.header('X-Nikita-Anon-Id');
     if (anonId) {
       const user: EralUser = { id: `anon:${anonId}`, email: '', displayName: 'Trial User', avatarUrl: null, plan: 'free' };
       return { user, apiKey: null, method: 'none' };
@@ -93,7 +93,7 @@ export const requireAuth = (
     if (!auth.user) {
       console.warn(`[Auth-Failed] 401 Unauthorized - IP: ${ip} - Method: ${method} - URL: ${url}`);
       return c.json(
-        { data: null, error: { code: 'UNAUTHORIZED', message: 'Provide a WokSpec JWT or Eral API key (Authorization: Bearer <token>)', status: 401 } },
+        { data: null, error: { code: 'UNAUTHORIZED', message: 'Provide a WokSpec JWT or Nikita API key (Authorization: Bearer <token>)', status: 401 } },
         401
       );
     }

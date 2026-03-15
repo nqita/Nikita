@@ -5,14 +5,13 @@ import { securityHeaders, requestId } from './middleware';
 import { chatRouter } from './routes/chat';
 import { generateRouter } from './routes/generate';
 import { analyzeRouter } from './routes/analyze';
-import { wokgenRouter } from './routes/wokgen';
 import { statusRouter } from './routes/status';
 import { keysRouter } from './routes/keys';
 import { toolsRouter } from './routes/tools';
 import { workspacesRouter } from './routes/workspaces';
 import { creditsRouter } from './routes/credits';
 // @ts-ignore — imported as text blob via wrangler [[rules]]
-import WIDGET_BUNDLE from '../dist/eral-widget.txt';
+import WIDGET_BUNDLE from '../dist/nikita-widget.txt';
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -35,22 +34,21 @@ app.use('*', cors({
     return origin ?? '*';
   },
   allowMethods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowHeaders: ['Content-Type', 'Authorization', 'X-Eral-Source', 'X-Eral-Anon-Id'],
+  allowHeaders: ['Content-Type', 'Authorization', 'X-Nikita-Source', 'X-Nikita-Anon-Id'],
   credentials: true,
 }));
 
 // ===== INFO =====
 app.get('/', (c) => c.json({
-  service: 'Eral',
-  description: 'Eral powers WokSpec AI: context-aware agents that understand your workspace and act across web + internal apps.',
+  service: 'Nikita',
+  description: 'Nikita powers WokSpec AI: context-aware agents that understand your workspace and act across web + internal apps.',
   version: '1.0.0',
-  docs: 'https://eral.wokspec.org/docs',
-  auth: 'WokSpec JWT or Eral API key',
+  docs: 'https://nikita.wokspec.org/docs',
+  auth: 'WokSpec JWT or Nikita API key',
   endpoints: {
     chat:       'POST /api/v1/chat',
     generate:   'POST /api/v1/generate',
     analyze:    'POST /api/v1/analyze',
-    wokgen:     'POST /api/v1/wokgen/prompt',
     keys:       'GET|POST|DELETE /api/v1/keys',
     tools:      'GET /api/v1/tools',
     workspaces: 'GET|POST /api/v1/workspaces',
@@ -69,7 +67,6 @@ const routes = [
   { path: '/v1/chat', router: chatRouter },
   { path: '/v1/generate', router: generateRouter },
   { path: '/v1/analyze', router: analyzeRouter },
-  { path: '/v1/wokgen', router: wokgenRouter },
   { path: '/v1/status', router: statusRouter },
   { path: '/v1/keys', router: keysRouter },
   { path: '/v1/tools', router: toolsRouter },
@@ -97,7 +94,7 @@ app.notFound((c) =>
 );
 
 app.onError((err, c) => {
-  console.error('[Eral Error]', err);
+  console.error('[Nikita Error]', err);
   return c.json(
     { data: null, error: { code: 'INTERNAL_ERROR', message: 'Internal server error', status: 500 } },
     500

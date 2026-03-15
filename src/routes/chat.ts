@@ -104,7 +104,7 @@ chat.post(
         error: null,
       });
     } catch (err) {
-      console.error('[Eral/chat] Error:', err);
+      console.error('[Nikita/chat] Error:', err);
       return c.json(
         { data: null, error: { code: 'AI_ERROR', message: 'AI request failed', status: 500 } },
         500

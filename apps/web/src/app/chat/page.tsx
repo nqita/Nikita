@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { ChatInterface } from '@/components/ChatInterface';
 import { Sidebar } from '@/components/Sidebar';
-import { getCredits, type UserCredits } from '@/lib/eral';
+import { getCredits, type UserCredits } from '@/lib/nikita';
 
 export default function ChatPage() {
   const router = useRouter();
@@ -29,12 +29,12 @@ export default function ChatPage() {
     const handleRefresh = () => refreshCredits();
     const handleAuthWall = () => setShowAuthModal(true);
     
-    window.addEventListener('eral:refresh-credits', handleRefresh);
-    window.addEventListener('eral:auth-wall', handleAuthWall);
+    window.addEventListener('nikita:refresh-credits', handleRefresh);
+    window.addEventListener('nikita:auth-wall', handleAuthWall);
     
     return () => {
-      window.removeEventListener('eral:refresh-credits', handleRefresh);
-      window.removeEventListener('eral:auth-wall', handleAuthWall);
+      window.removeEventListener('nikita:refresh-credits', handleRefresh);
+      window.removeEventListener('nikita:auth-wall', handleAuthWall);
     };
   }, [refreshCredits]);
 
@@ -64,7 +64,7 @@ export default function ChatPage() {
         {/* Header */}
         <header className="flex items-center justify-between px-6 py-4 border-b border-white/[0.03] bg-background/80 backdrop-blur-md z-20">
           <div className="flex items-center gap-4">
-            <span className="font-bold text-lg tracking-tight text-white">Eral</span>
+            <span className="font-bold text-lg tracking-tight text-white">Nikita</span>
             {credits && (
               <div className="flex items-center gap-2">
                 <div className="h-4 w-px bg-white/10" />
@@ -108,7 +108,7 @@ export default function ChatPage() {
                 <span className="text-2xl font-bold text-accent">ER</span>
               </div>
               
-              <h2 className="text-2xl font-bold text-white text-center mb-3">Continue with Eral</h2>
+              <h2 className="text-2xl font-bold text-white text-center mb-3">Continue with Nikita</h2>
               <p className="text-muted-foreground text-center text-sm leading-relaxed mb-10">
                 You&apos;ve used your free messages. Sign in to unlock $0.05 in free credits and full access to WokSpec AI.
               </p>

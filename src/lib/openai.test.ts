@@ -3,7 +3,7 @@ import { run } from './openai';
 import type { Message } from '../types';
 
 const MESSAGES: Message[] = [
-  { role: 'system', content: 'You are Eral.' },
+  { role: 'system', content: 'You are Nikita.' },
   { role: 'user', content: 'Hello' },
 ];
 
