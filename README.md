@@ -1,3 +1,16 @@
+<p align="center">
+  <img src="assets/hero.svg" alt="Nikita hero" />
+</p>
+
+# Nikita
+
+Nikita — AI runtime for WokSpec. Branded with pink theme and scoped for standalone development under the "nqita" organization.
+
+See docs/ for usage and developer guides.
+
+
+---
+
 # Nikita
 
 <p align="center">
