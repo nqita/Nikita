@@ -1,0 +1,26 @@
+{
+  "name": "nikita-web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "deploy": "npm run build && wrangler pages deploy out --project-name nikita --branch main",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@opennextjs/cloudflare": "^1.16.5",
+    "next": "^15.3.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.9",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "tailwindcss": "^4.1.0",
+    "@tailwindcss/postcss": "^4.1.0",
+    "typescript": "^5.8.2",
+    "wrangler": "^4"
+  }
+}

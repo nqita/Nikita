@@ -1,0 +1,44 @@
+# Sweep AI configuration for Eral
+# https://docs.sweep.dev/usage/config
+
+gpt_4_and_rust_version: "gpt-4o"
+
+include_dirs:
+  - src
+  - apps/extension/src
+  - apps/web/src
+  - widget
+
+exclude_dirs:
+  - node_modules
+  - apps/extension/node_modules
+  - apps/web/node_modules
+  - apps/extension/build
+  - apps/web/.next
+  - apps/web/out
+  - dist
+  - .wrangler
+
+exclude_files:
+  - "*.lock"
+  - "*.log"
+  - ".dev.vars"
+  - ".env*"
+
+rules:
+  - "Every Hono route handler must use requireAuth() middleware unless it is an explicitly public endpoint (health, root info, widget.js)."
+  - "All POST/PATCH/DELETE routes must use zValidator with a zod schema."
+  - "All API responses must follow the { data, error } envelope format."
+  - "Never log user message content. Log metadata only (userId, sessionId, product)."
+  - "Content scripts must use Shadow DOM for UI injection. No global CSS."
+  - "Auth tokens must not be placed in PLASMO_PUBLIC_* variables."
+  - "New KV bindings must be added to both src/types.ts Env interface and wrangler.toml."
+  - "New environment variables must be documented in .env.example."
+
+description: |
+  Eral is the AI backbone for the WokSpec ecosystem. It runs as a Cloudflare Worker (Hono)
+  and provides chat with persistent session memory, content generation, analysis, and
+  brand context injection. It includes a Plasmo browser extension (Chrome/Firefox/Edge)
+  and a Next.js web app. All API endpoints require WokSpec JWT or Eral API key auth.
+  User message content must never be logged. Session memory is stored in Cloudflare KV.
+  Primary AI model is GPT-4o with Cloudflare Workers AI as fallback.

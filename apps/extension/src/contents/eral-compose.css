@@ -1,0 +1,7 @@
+/* nikita-compose.css — injected into host pages */
+/* Minimal reset to avoid host-page CSS bleeding into our compose button */
+[data-nikita-compose] {
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.4;
+}

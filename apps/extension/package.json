@@ -1,0 +1,74 @@
+{
+  "name": "@wokspec/nikita-extension",
+  "displayName": "Nikita Web Extension",
+  "version": "0.2.0",
+  "description": "Nikita — AI browser extension. Chat with any page, summarize, explain, clip, and download.",
+  "private": true,
+  "scripts": {
+    "dev": "plasmo dev",
+    "dev:firefox": "plasmo dev --target=firefox-mv2",
+    "dev:edge": "plasmo dev --target=edge-mv3",
+    "dev:opera": "plasmo dev --target=opera-mv3",
+    "build": "plasmo build",
+    "build:firefox": "plasmo build --target=firefox-mv2",
+    "build:firefox-mv3": "plasmo build --target=firefox-mv3",
+    "build:edge": "plasmo build --target=edge-mv3",
+    "build:opera": "plasmo build --target=opera-mv3",
+    "build:all": "npm run build && npm run build:firefox && npm run build:edge && npm run build:opera",
+    "package": "plasmo package",
+    "package:firefox": "plasmo package --target=firefox-mv2",
+    "package:edge": "plasmo package --target=edge-mv3",
+    "package:opera": "plasmo package --target=opera-mv3",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "plasmo": "^0.90.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^2.5.0"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.268",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.5.0",
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.4.0"
+  },
+  "manifest": {
+    "host_permissions": [
+      "<all_urls>"
+    ],
+    "permissions": [
+      "tabs",
+      "storage",
+      "contextMenus",
+      "scripting",
+      "downloads",
+      "notifications",
+      "activeTab",
+      "alarms"
+    ],
+    "commands": {
+      "clip-current-page": {
+        "suggested_key": {
+          "default": "Ctrl+Shift+Y",
+          "mac": "Command+Shift+Y"
+        },
+        "description": "Clip the current page with Nikita"
+      },
+      "summarize-page": {
+        "suggested_key": {
+          "default": "Ctrl+Shift+E",
+          "mac": "Command+Shift+E"
+        },
+        "description": "Summarize this page with Nikita"
+      }
+    },
+    "side_panel": {
+      "default_path": "sidepanel.html"
+    }
+  }
+}

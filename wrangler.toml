@@ -1,0 +1,62 @@
+name = "nikita"
+main = "src/index.ts"
+compatibility_date = "2026-02-20"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+preview_urls = false
+
+[[rules]]
+type = "Text"
+globs = ["dist/*.txt"]
+fallthrough = true
+
+[[routes]]
+pattern = "nikita.wokspec.org/api/*"
+zone_name = "wokspec.org"
+
+[observability]
+enabled = true
+
+[vars]
+ENVIRONMENT = "production"
+AI_PROVIDER = "groq"
+AI_SPEND_MODE = "paid-primary"
+GROQ_MODEL = "llama3-70b-8192"
+CF_AI_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
+CF_AI_FALLBACK_MODEL = "@cf/meta/llama-3.1-8b-instruct-fp8-fast"
+
+# KV Namespaces
+# KV_SESSIONS: shared with WokAPI for cross-service auth verification
+# KV_RATE_LIMITS: per-IP rate limiting for all Nikita endpoints
+# KV_MEMORY: conversation memory store (TTL-based, per user session)
+[[kv_namespaces]]
+binding = "KV_SESSIONS"
+id = "487bab854f714db8a46e50f80f51d766"
+
+[[kv_namespaces]]
+binding = "KV_RATE_LIMITS"
+id = "f3be942849d4466bad374130bdf451ce"
+
+[[kv_namespaces]]
+binding = "KV_MEMORY"
+id = "381283eb1b1e4f02b4c9b26dcbaa07ab"
+
+[[kv_namespaces]]
+binding = "KV_API_KEYS"
+id = "e4197f2c6dcd42b5ac1065d01ee9f0e8"
+
+[[kv_namespaces]]
+binding = "KV_CREDITS"
+id = "487bab854f714db8a46e50f80f51d766" # Reusing KV_SESSIONS ID
+
+# Cloudflare Workers AI (free-first default provider)
+[ai]
+binding = "AI"
+
+# Secrets (set via: wrangler secret put <NAME>)
+# JWT_SECRET        — shared with WokAPI, required
+# OPENAI_API_KEY    — optional paid provider override
+# SENTRY_DSN        — optional, error tracking
+
+[dev]
+port = 8788

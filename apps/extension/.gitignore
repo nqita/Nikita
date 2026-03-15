@@ -1,0 +1,6 @@
+node_modules/
+build/
+.plasmo/cache/
+.env
+.env.local
+*.tsbuildinfo

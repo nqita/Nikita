@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.next/
+.open-next/
+apps/web/out/
+*.tsbuildinfo
+.env
+.env.local
+.dev.vars
+.wrangler/
+.cache/
+# Extension build artifacts
+apps/extension/node_modules/
+apps/extension/build/
+apps/extension/.plasmo/
+apps/extension/*.tsbuildinfo
+apps/extension/package-lock.json

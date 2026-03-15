@@ -1,0 +1,39 @@
+name: Gitleaks
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  gitleaks:
+    name: Secret Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pull-requests: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Gitleaks CLI
+        env:
+          GITLEAKS_VERSION: '8.24.2'
+        run: |
+          mkdir -p "$RUNNER_TEMP/bin"
+          curl -sSfL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" \
+            | tar -xz -C "$RUNNER_TEMP/bin" gitleaks
+          echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+
+      - name: Run Gitleaks
+        run: |
+          gitleaks git \
+            --redact \
+            --verbose \
+            --report-format sarif \
+            --report-path gitleaks.sarif
