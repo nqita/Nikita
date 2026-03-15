@@ -1,16 +1,9 @@
 # Nikita
 
 <p align="center">
-  <img src="https://via.placeholder.com/1400x420/FF2D95/FFFFFF?text=Nikita+—+AI+Runtime" alt="Nikita hero" />
+  <img src="https://raw.githubusercontent.com/wokspec/Nikita/main/assets/hero.svg" alt="Nikita hero" />
 </p>
 
-Nikita is the AI runtime for WokSpec: Cloudflare Worker API, browser extension, and embeddable widget.
+AI Runtime & Embeddables
 
-- Brand color: `#FF2D95` (Nikita pink)
-- Public: docs, examples, and integration guides
-
-## Quick start
-See `docs/` for integration guides and runtime API.
-
-## License
-FSL-1.1-MIT (where applicable)
+This repository is part of the WokSpec ecosystem. See https://wokspec.org for links and docs.
