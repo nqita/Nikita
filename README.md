@@ -1,6 +1,8 @@
-# Nikita → nqita org
+# NQITA
 
-AI layer for WokSpec. Ships as a Cloudflare Worker API, an embeddable widget, and a browser extension.
+NQITA is a persistent AI companion and interface layer for the broader ecosystem.
+
+It ships today as a Cloudflare Worker API, an embeddable widget, and a browser extension, but it should be understood as more than a single application surface.
 
 **Live:** [nikita.wokspec.org](https://nikita.wokspec.org)  
 **Repo of record:** https://github.com/nqita/nqita and https://github.com/nqita/nqita-cli  
@@ -10,7 +12,7 @@ This copy remains for reference; future changes, builds, and deployments belong 
 
 ## What it is
 
-Nikita is the AI backbone across every WokSpec product. The same model and memory layer powers the chat widget on wokspec.org, the AI companion in Studio, the news analysis in WokHei, and the browser extension.
+NQITA acts as an interface between users, tools, and ecosystem systems. It can provide companion behavior across web, embedded, and extension-based surfaces while remaining independently understandable as its own product.
 
 ```
 apps/
@@ -142,6 +144,9 @@ wrangler kv namespace create KV_MEMORY
 
 ## Documentation
 
+- [Project Context](./PROJECT_CONTEXT.md)
+- [Agent Rules](./AGENT_RULES.md)
+- [System Overview](./SYSTEM_OVERVIEW.md)
 - [Nikita Architecture](./docs/architecture.md)
 - [API Reference](./docs/api.md)
 - [WokSpec Ecosystem Overview](https://github.com/WokSpec/WokDocs)
